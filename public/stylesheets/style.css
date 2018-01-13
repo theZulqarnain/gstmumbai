@@ -623,7 +623,7 @@ featured-box .box-content {
     margin: 24px 0 25px 0;
 }
 .owl-theme .owl-nav.disabled+.owl-dots {
-    margin-top: -20px;
+    margin-top: -60px;
 }
 .owl-carousel .owl-stage-outer {
     position: relative;
