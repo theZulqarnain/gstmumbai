@@ -9,8 +9,8 @@ router.get('/OrganizationalStructure', function(req, res) {
 router.get('/LocateOffices', function(req, res) {
     res.render('aboutUs/LocateOffices');
 });
-router.get('/VisionMission', function(req, res) {
-    res.render('aboutUs/VisionMission');
+router.get('/CitizenCharter', function(req, res) {
+    res.render('aboutUs/CitizenCharter');
 });
 
 module.exports = router;

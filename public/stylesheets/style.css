@@ -430,6 +430,10 @@
 .no-margin{
     margin: 0px;
 }
+.navbar .navbar-nav .active {
+    background-color: orange;
+    border-radius: 5px;
+}
 .dropdown-submenu {
     position: relative;
 }
@@ -630,4 +634,16 @@ featured-box .box-content {
     overflow: hidden;
     z-index: -1;
     -webkit-transform: translate3d(0,0,0);
+}
+
+/*footer*/
+.ulClass{
+    list-style: none;
+    padding: 10px
+}
+.liClass{
+    padding: 5px
+}
+.lia{
+    color: #ffffff;
 }
