@@ -642,7 +642,8 @@ featured-box .box-content {
     padding: 10px
 }
 .liClass{
-    padding: 5px
+    padding: 5px;
+
 }
 .lia{
     color: #ffffff;
@@ -672,4 +673,17 @@ featured-box .box-content {
     line-height: 30px;
     margin-bottom: 5px;
     text-align: center;
+}
+
+/*faqs*/
+.ullia ul{
+    list-style: none;
+    padding: 10px;
+    text-align: left;
+    padding: 10px;
+    margin-left: 100px;
+}
+.ullia li{
+    font-weight: bold;
+    padding: 5px;
 }

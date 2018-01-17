@@ -15,6 +15,7 @@ var centralExcise = require('./routes/centralExcise');
 var tradeNotices = require('./routes/tradeNotices');
 var contactus = require('./routes/contactus');
 var RTI = require('./routes/RTI');
+var desk = require('./routes/desk');
 
 var app = express();
 
@@ -30,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/desk', routes);
+app.use('/desk', desk);
 app.use('/aboutus',about);
 app.use('/jurisdiction',jurisdiction);
 app.use('/gst',gst);
