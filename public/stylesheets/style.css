@@ -665,3 +665,11 @@ featured-box .box-content {
     height: 100%;
     width: 100%;
 }
+/*headquarters*/
+.headquarters{
+    background-color: #F4F4F4;
+    padding: 10px;
+    line-height: 30px;
+    margin-bottom: 5px;
+    text-align: center;
+}

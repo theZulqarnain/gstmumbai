@@ -10,6 +10,10 @@ router.get('/sevaKendra', function(req, res) {
     res.render('GST/sevaKendra');
 });
 
+router.get('/faqs', function(req, res) {
+    res.render('GST/faqs');
+});
+
 
 
 module.exports = router;

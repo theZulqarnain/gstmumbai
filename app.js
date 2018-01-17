@@ -30,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/desk', routes);
 app.use('/aboutus',about);
 app.use('/jurisdiction',jurisdiction);
 app.use('/gst',gst);

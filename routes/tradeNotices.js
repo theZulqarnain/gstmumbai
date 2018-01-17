@@ -7,8 +7,8 @@ router.get('/tradeNotices', function(req, res) {
     res.render('tradeNotices/tradeNotices');
 });
 
-router.get('/DivisionsRanges', function(req, res) {
-    res.render('jurisdiction/DivisionsRanges');
+router.get('/tenders', function(req, res) {
+    res.render('tradeNotices/tenders');
 });
 
 
