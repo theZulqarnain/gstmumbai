@@ -548,11 +548,20 @@ featured-box .box-content {
     padding: 30px 30px 10px 30px;
 }
  /*sidebar Css*/
+
 .sidebar{
     background-color: #e4f579;
     padding: 20px;
     border-radius: 5px;
     opacity: 2;
+}
+/*Departmental*/
+.Departmental{
+    background-color: #03a9f4;
+    padding: 20px;
+    border-radius: 5px;
+    opacity: 2;
+    margin-top: 3px;
 }
 .c-height{
     max-height: 400px;

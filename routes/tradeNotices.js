@@ -11,6 +11,10 @@ router.get('/tenders', function(req, res) {
     res.render('tradeNotices/tenders');
 });
 
+router.get('/misc', function(req, res) {
+    res.render('tradeNotices/misc');
+});
+
 
 
 module.exports = router;

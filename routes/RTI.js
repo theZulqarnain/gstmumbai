@@ -3,8 +3,8 @@ var router = express.Router();
 
 /* GET users listing. */
 
-router.get('/s', function(req, res) {
-    res.render('RTI/statutoryinformation');
+router.get('/informationOfficer', function(req, res) {
+    res.render('RTI/informationOfficer');
 });
 router.get('/xyz', function(req, res) {
     res.render('serviceTax/forms');
