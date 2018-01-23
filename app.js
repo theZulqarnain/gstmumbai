@@ -16,6 +16,7 @@ var tradeNotices = require('./routes/tradeNotices');
 var contactus = require('./routes/contactus');
 var RTI = require('./routes/RTI');
 var desk = require('./routes/desk');
+var information = require('./routes/information');
 
 var app = express();
 
@@ -40,6 +41,7 @@ app.use('/serviceTax',serviceTax);
 app.use('/tradeNotices',tradeNotices);
 app.use('/RTI',RTI);
 app.use('/contactus',contactus);
+app.use('/information',information);
 app.use('/users', users);
 
 
