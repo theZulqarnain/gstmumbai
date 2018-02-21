@@ -21,7 +21,7 @@ var information = require('./routes/information');
 //admin Requires
 var admin = require('./routes/admin/index');
 var dashboard = require('./routes/admin/dashboard');
-var pagesList = require('./routes/admin/pagesList');
+var pages = require('./routes/admin/pages');
 
 var app = express();
 
@@ -52,7 +52,7 @@ app.use('/users', users);
 //admin Routes
 app.use('/admin', admin);
 app.use('/admin/dashboard',dashboard);
-app.use('/admin/pagesList',pagesList);
+app.use('/admin/pages',pages);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

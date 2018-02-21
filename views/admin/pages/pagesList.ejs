@@ -7,7 +7,10 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">List of Pages</h4>
-                        <p class="category">you can View,Edit and Delete Pages</p>
+                        <p class="category">You can View,Edit and Delete Pages</p>
+                        <div class="pull-right">
+                        <button type="button" class="btn btn-success "><i class="fa fa-plus-square" style="font-size: 18px;"></i> Add New Page</button>
+                        </div>
                     </div>
                 <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
@@ -22,9 +25,9 @@
                     <tr>
                         <td>1</td>
                         <td>HOME</td>
-                        <td><a href="#" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
+                        <td><a href="/admin/pages/edit" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
                                 ---
-                            <a href="#" data-toggle="tooltip" title="Delete"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
+                            <a href="/admin/pages/delete" data-toggle="tooltip" title="Delete" onclick="if (!confirm('Are you sure to DELETE Page?')) { return false }"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
                         <td>21-02-2018</td>
 
                     </tr>
