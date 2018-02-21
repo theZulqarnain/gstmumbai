@@ -18,6 +18,11 @@ var RTI = require('./routes/RTI');
 var desk = require('./routes/desk');
 var information = require('./routes/information');
 
+//admin Requires
+var admin = require('./routes/admin/index');
+var dashboard = require('./routes/admin/dashboard');
+var pagesList = require('./routes/admin/pagesList');
+
 var app = express();
 
 // view engine setup
@@ -44,6 +49,10 @@ app.use('/contactus',contactus);
 app.use('/information',information);
 app.use('/users', users);
 
+//admin Routes
+app.use('/admin', admin);
+app.use('/admin/dashboard',dashboard);
+app.use('/admin/pagesList',pagesList);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
