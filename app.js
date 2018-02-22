@@ -1,9 +1,35 @@
 var express = require('express');
+var app = express();
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport   = require('passport')
+var session    = require('express-session');
+   ////////////////////////////////////////////////////////////
+///////////////////// start Passport   ///////////////////////////////
+   ////////////////////////////////////////////////////////////
+app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+//Models
+var models = require("./models");
+//var usermodel = require("./models/user");
+//debugger;
+//load passport strategies
+require('./services/passport.js')(passport,models.users);
+//Sync Database
+models.sequelize.sync().then(function(){
+    console.log('Nice! Database looks fine')
+
+}).catch(function(err){
+    console.log(err,"Something went wrong with the Database Update!")
+});
+
+////////////////////////////////////////////////////////////
+///////////////////// End Passport   ///////////////////////////////
+////////////////////////////////////////////////////////////
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -22,8 +48,9 @@ var information = require('./routes/information');
 var admin = require('./routes/admin/index');
 var dashboard = require('./routes/admin/dashboard');
 var pages = require('./routes/admin/pages');
+var user = require('./routes/admin/users');
 
-var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -53,6 +80,10 @@ app.use('/users', users);
 app.use('/admin', admin);
 app.use('/admin/dashboard',dashboard);
 app.use('/admin/pages',pages);
+app.use('/admin/users',user(models.user));
+
+
+//app.js squelize section ///
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

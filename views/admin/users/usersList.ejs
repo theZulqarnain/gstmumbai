@@ -1,0 +1,66 @@
+<% include ../partials/header.ejs%>
+<% include ../partials/sidebar.ejs%>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">List of Users</h4>
+                        <p class="category">You can View,Edit and Delete Users</p>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success " onclick="javascript:location.href='/admin/users/userNew'"><i class="fa fa-plus-square" style="font-size: 18px;"></i> Add New User</button>
+                        </div>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <th>S.NO</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                            <th>Active</th>
+                            <th>created_at</th>
+
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>zulqarnain</td>
+                                <td><a href="/admin/users/userEdit" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
+                                    ---
+                                    <a href="/admin/users/delete" data-toggle="tooltip" title="Delete" onclick="if (!confirm('Are you sure to DELETE User')) { return false }"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
+                                <td>1</td>
+                                <td>21-02-2018</td>
+
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>vinay</td>
+                                <td><a href="#" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
+                                    ---
+                                    <a href="#" data-toggle="tooltip" title="Delete"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
+                                <td>0</td>
+                                <td>21-02-2018</td>
+
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Heena</td>
+                                <td><a href="#" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
+                                    ---
+                                    <a href="#" data-toggle="tooltip" title="Delete"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
+                                <td>0</td>
+                                <td>21-02-2018</td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer.ejs%>
