@@ -40,7 +40,7 @@ module.exports = function(passport,user){
             var generateHash = function(password) {
                 return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
             };
-            console.log(User);
+
             User.findOne({where: {email:email}}).then(function(user){
 
                 if(user)
