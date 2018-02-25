@@ -4,15 +4,13 @@
 4-online RTI
 5-locate us
 6-where is contact us page....?
+7-add dynamically website name and other abstract names(header,footer,signing)
 
 adminpanel
 1-transparent logo
+2-create page send data using get method.
 
 
 
 
 
-
-
-
-two way binding

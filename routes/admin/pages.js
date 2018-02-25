@@ -21,7 +21,15 @@ if (!fs.existsSync(filesDir)){
     fs.mkdirSync(filesDir);
 }
 
-router.post('/upload_file', function (req, res) {
+function isLoggedIn(req,res,next) {
+    if(req.isAuthenticated()){
+        return next();
+    }
+
+    res.redirect('/admin')
+}
+
+router.post('/upload_file',isLoggedIn, function (req, res) {
 
     var options = {
         validation: null
@@ -36,7 +44,7 @@ router.post('/upload_file', function (req, res) {
     });
 });
 
-router.post('/upload_image', function (req, res) {
+router.post('/upload_image',isLoggedIn, function (req, res) {
     //console.log(req.body)
     FroalaEditor.Image.upload(req, '/../public/uploads/', function(err, data) {
 
@@ -47,7 +55,7 @@ router.post('/upload_image', function (req, res) {
     });
 });
 
-router.post('/delete_image', function (req, res) {
+router.post('/delete_image',isLoggedIn, function (req, res) {
 
     FroalaEditor.Image.delete(req.body.src, function(err) {
 
@@ -58,7 +66,7 @@ router.post('/delete_image', function (req, res) {
     });
 });
 
-router.post('/delete_file', function (req, res) {
+router.post('/delete_file',isLoggedIn, function (req, res) {
 
     FroalaEditor.File.delete(req.body.src, function(err) {
 
@@ -69,7 +77,7 @@ router.post('/delete_file', function (req, res) {
     });
 });
 
-router.get('/load_images', function (req, res) {
+router.get('/load_images',isLoggedIn, function (req, res) {
     console.log('list')
     FroalaEditor.Image.list('/../public/uploads/', function(err, data) {
 
@@ -82,11 +90,11 @@ router.get('/load_images', function (req, res) {
 
 
 //froalaEditor Ends
-router.get('/create', function(req, res) {
+router.get('/create',isLoggedIn, function(req, res) {
     res.render('admin/pages/pageCreate');
 });
 
-router.post('/create', function(req, res) {
+router.post('/create',isLoggedIn, function(req, res) {
     console.log(req.body);
     // models.sequelize.sync({force:true}).then(function () {
     //     var page = Page.build({
@@ -149,20 +157,19 @@ router.post('/create', function(req, res) {
     //res.render('admin/pages/pageCreate');
 });
 
-router.get('/edit', function(req, res) {
+router.get('/edit',isLoggedIn, function(req, res) {
     res.render('admin/pages/pageEdit');
 });
 
-router.post('/edit', function(req, res) {
+router.post('/edit',isLoggedIn, function(req, res) {
     console.log(req.params, req.body);
     //res.send("post request")
 });
 
-router.get('/delete', function(req, res) {
+router.get('/delete',isLoggedIn, function(req, res) {
     if (req.query) {
         res.render('admin/pages/pagesList');
     }
-
 });
 
 
