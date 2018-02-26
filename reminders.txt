@@ -9,6 +9,21 @@
 adminpanel
 1-transparent logo
 2-create page send data using get method.
+3-validation
+4-body parser storing limit 100mb...?
+5-redirect after fail has to be done
+6-unique title name and disable edit title and fetch dynamically title @frontend
+7-nodeMailer
+8-google analytics
+
+
+
+
+minor prblm
+1-query executing multiple times.
+2-image uploading but not showing in editor
+3-pagination
+
 
 
 

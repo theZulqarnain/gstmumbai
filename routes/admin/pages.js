@@ -1,17 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var bCrypt = require('bcrypt-nodejs');
-var Sequelize = require("sequelize");
 var db = require("../../models/index");
 var pages = require('../../models/pages')(db.sequelize, db.Sequelize);
 var fs = require('fs');
 var path = require('path');
 var FroalaEditor = require('../../lib/froalaEditor.js');
 
-/* GET home page. */
-router.get('/', function(req, res) {
-    res.render('admin/pages/pagesList');
-});
+
 
 //froalaEditor
 
@@ -78,7 +73,6 @@ router.post('/delete_file',isLoggedIn, function (req, res) {
 });
 
 router.get('/load_images',isLoggedIn, function (req, res) {
-    console.log('list')
     FroalaEditor.Image.list('/../public/uploads/', function(err, data) {
 
         if (err) {
@@ -90,27 +84,23 @@ router.get('/load_images',isLoggedIn, function (req, res) {
 
 
 //froalaEditor Ends
+
+/* GET home page. */
+router.get('/', function(req, res) {
+    pages.findAll({}).then(function ( data) {
+        if(!data){
+            res.render('admin/pages/pagesList',{content:'Not Found!'});
+        }
+        res.render('admin/pages/pagesList',{data:data});
+    });
+});
+
 router.get('/create',isLoggedIn, function(req, res) {
     res.render('admin/pages/pageCreate');
 });
 
 router.post('/create',isLoggedIn, function(req, res) {
-    console.log(req.body);
-    // models.sequelize.sync({force:true}).then(function () {
-    //     var page = Page.build({
-    //         title:req.body.title,
-    //         content:req.body.content
-    //     })
-    //     page.save();
-    // })
-//Inserting Data into database
-//     Page.create({ title:req.body.title, content:req.body.content }).then(page => {
-//         // you can now access the newly created task via the variable task
-//         res.render('admin/pages');
-//     })
 
-
-    // console.log(db.sequeliae);
     db.sequelize.sync().then(function () {
 
         // console.log(pages, pages().create)
@@ -118,58 +108,62 @@ router.post('/create',isLoggedIn, function(req, res) {
             title:req.body.title,
             content: req.body.content
         }).then(function (data) {
-            res.render('admin/pages');
-        });
-        res.render('admin/pages/pageCreate');
+            res.redirect('/admin/pages')
+        }, function(err){
+            //console.log(err);
+            res.render('admin/pages/pageCreate');
+        })
+        //res.render('admin/pages/pageCreate');
     });
 
-    // Page.find({where: {title:title}}).exec(function(err, title) {
-    // //Page.findOne({where: {title:title}}).then(function(title){
-    //
-    //     if(title)
-    //     {
-    //         return done(null, false, {message : 'That TITLE is already taken'} );
-    //     }
-    //
-    //     else
-    //     {
-    //         var data =
-    //             {   title:title,
-    //                 content:req.body.content
-    //             };
-    //
-    //
-    //         Page.create(data).then(function(page,created){
-    //             if(!page){
-    //                 res.render('admin/pages/pageCreate');
-    //             }
-    //
-    //             if(page){
-    //                 res.render('admin/pages');
-    //             }
-    //
-    //
-    //         });
-    //     }
-    //
-    //
-    // });
-    //res.render('admin/pages/pageCreate');
 });
 
-router.get('/edit',isLoggedIn, function(req, res) {
-    res.render('admin/pages/pageEdit');
+router.get('/edit/:title',isLoggedIn, function(req, res) {
+    var title=req.params.title;
+    pages.find({where:{title:title}}).then(function ( data) {
+        if(!data){
+            res.render('admin/pages/pageEdit',{data:'Not Found!'});
+        }
+        res.render('admin/pages/pageEdit',{data:data});
+    });
 });
 
 router.post('/edit',isLoggedIn, function(req, res) {
-    console.log(req.params, req.body);
+
+    pages.update(
+        { content: req.body.content },
+        { where: { title: req.body.title } }
+    )
+        .then(result =>
+            //res.render('admin/pages')
+            res.redirect('/admin/pages')
+            //handleResult(result)
+        )
+        .catch(err =>
+            res.render('/admin/pages/pageEdit')
+            //handleError(err)
+        )
+    //console.log(req.params, req.body);
     //res.send("post request")
 });
 
-router.get('/delete',isLoggedIn, function(req, res) {
-    if (req.query) {
-        res.render('admin/pages/pagesList');
-    }
+router.get('/delete/:title',isLoggedIn, function(req, res) {
+    var title=req.params.title;
+    pages.destroy({
+        where: {
+            title: title
+        }
+    }).then(function(rowDeleted){ // rowDeleted will return number of rows deleted
+        if(rowDeleted === 1){
+            //console.log('Deleted successfully');
+            //res.render('admin/pages/pagesList',{msg:'Deleted successfully'});
+            res.redirect('/admin/pages')
+        }
+    }, function(err){
+        console.log(err);
+        res.redirect('/admin/pages')
+    });
+
 });
 
 
