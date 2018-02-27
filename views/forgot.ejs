@@ -64,37 +64,24 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                     <div class="card card-signup">
-                            <div class="header header-primary text-center">
-                                <h4>SignIn</h4>
-                                <div class="social-line">
+                        <div class="header header-primary text-center">
+                            <h4>Forgot Password</h4>
+                            <div class="social-line">
 
-                                </div>
                             </div>
-                            <div class="content">
-                                <form action="/admin/users/signin" method="post">
+                        </div>
+                        <div class="content">
+                            <form action="/admin/forgot" method="post">
 
-                                    <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">email</i>
-                                            </span>
-                                        <input type="text" class="form-control" placeholder="Email..." name="email">
-                                    </div>
-
-                                    <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">lock_outline</i>
-                                            </span>
-                                        <input type="password" placeholder="Password..." class="form-control" name="password" />
-                                    </div>
-                                    <div class="footer text-center">
-                                        <button type="submit" class="btn btn-simple btn-primary btn-lg">Sign In</button>
-                                    </div>
-
-                                </form>
-                                <div class="footer text-center">
-                                    <button class="btn btn-simple btn-primary btn-lg" onClick="window.location='/admin/forgot';">Forget Password</button>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" autofocus class="form-control">
                                 </div>
-                            </div>
+                                <div class="form-group text-center">
+                                    <input type="submit" class="btn btn-primary" value="Reset Password">
+                                </div>
+                            </form>
+                        </div>
 
 
                     </div>

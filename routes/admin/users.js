@@ -22,7 +22,7 @@ function isLoggedIn(req,res,next) {
 }
 
 /* GET index users page. */
-router.get('/',isLoggedIn, function(req, res) {
+router.get('/', function(req, res) {
     res.render('admin/users/usersList');
 });
 
@@ -30,7 +30,7 @@ router.get('/userNew', function(req, res) {
     res.render('admin/users/userNew');
 });
 
-router.post('/userNew',isLoggedIn, passport.authenticate('local-signup',  {
+router.post('/userNew', passport.authenticate('local-signup',  {
     successRedirect: '/admin/users',
     failureRedirect: '/admin/users/userNew'}
 ));
@@ -43,7 +43,7 @@ router.post('/userEdit',isLoggedIn, function(req, res) {
     console.log( req.body);
 });
 
-router.get('/delete', function(req, res) {
+router.get('/delete',isLoggedIn, function(req, res) {
     if (req.query) {
         res.render('admin/users/usersList');
     }
@@ -60,6 +60,12 @@ router.post('/signin',passport.authenticate('local-signin',
     }
 
 ));
+
+router.get('/logout',function (req,res) {
+    req.logout();
+    res.redirect('/admin');
+});
+
 
 
     return router;

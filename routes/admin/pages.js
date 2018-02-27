@@ -133,14 +133,12 @@ router.post('/edit',isLoggedIn, function(req, res) {
     pages.update(
         { content: req.body.content },
         { where: { title: req.body.title } }
-    )
-        .then(result =>
+    ).then(result =>
             //res.render('admin/pages')
             res.redirect('/admin/pages')
             //handleResult(result)
-        )
-        .catch(err =>
-            res.render('/admin/pages/pageEdit')
+        ).catch(err =>
+            res.redirect('/admin/pages/edit/'+title)
             //handleError(err)
         )
     //console.log(req.params, req.body);
@@ -161,7 +159,7 @@ router.get('/delete/:title',isLoggedIn, function(req, res) {
         }
     }, function(err){
         console.log(err);
-        res.redirect('/admin/pages')
+        // res.render('/admin/pages/pagesList',{msg:'Error in Query'});
     });
 
 });

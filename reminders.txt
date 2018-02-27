@@ -25,6 +25,11 @@ minor prblm
 3-pagination
 
 
+image uploading but not showing in editor
+redirect after fail has to be done
+.env
+google analytics
+
 
 
 
