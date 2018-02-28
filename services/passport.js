@@ -1,5 +1,7 @@
-//load bcrypt
 var bCrypt = require('bcrypt-nodejs');
+var async = require("async");
+var nodemailer = require("nodemailer");
+var crypto = require("crypto");
 
 module.exports = function(passport,user){
 
@@ -30,16 +32,16 @@ module.exports = function(passport,user){
 
         {
             usernameField : 'email',
-            passwordField : 'password',
+            passwordField: 'email',
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
 
         function(req, email, password, done){
 
 
-            var generateHash = function(password) {
-                return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-            };
+            // var generateHash = function(password) {
+            //     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+            // };
 
             User.findOne({where: {email:email}}).then(function(user){
 
@@ -50,10 +52,9 @@ module.exports = function(passport,user){
 
                 else
                 {
-                    var userPassword = generateHash(password);
+                    //var userPassword = generateHash(password);
                     var data =
                         { email:email,
-                            password:userPassword,
                             firstname: req.body.firstname,
                             lastname: req.body.lastname,
                             username:req.body.username
@@ -66,16 +67,34 @@ module.exports = function(passport,user){
                         }
 
                         if(newUser){
+                            console.log(newUser.email)
                             async.waterfall([
                                 function (done) {
                                     crypto.randomBytes(20, function (err, buf) {
                                         var token = buf.toString('hex');
                                         done(err, token);
                                     });
-                                    //console.log('1st function')
+                                    console.log('1st function')
+                                }, function (token, done) {
+                                    User.findOne({where: {email: newUser.email}}).then(function (user, err) {
+                                        //err='No account with that email address exists.';
+                                        if (!user) {
+                                            req.flash('error', 'No account with that email address exists.');
+                                            return res.redirect('/admin/forgot');
+                                        }
+                                        user.resetPasswordToken = token;
+                                        user.resetPasswordExpires = Date.now() + 3600000 * 4; // 4 hour
+                                        user.save({fields: ['resetPasswordToken', 'resetPasswordExpires']}).then(() => {
+
+                                            done(err, token, user);
+                                        });
+
+                                        //console.log('2nd function');
+                                    });
+
                                 },
-                                function (token, email, done) {
-                                    //console.log('3rd function');
+                                function (token, user, done) {
+                                    console.log('2nd function');
                                     var smtpTransport = nodemailer.createTransport({
                                         service: 'Gmail',
                                         auth: {
@@ -84,28 +103,27 @@ module.exports = function(passport,user){
                                         }
                                     });
                                     var mailOptions = {
-                                        to: email,
+                                        to: user.email,
                                         from: 'ak.zul65@gmail.com',
                                         subject: 'Central Mumbai GST New Password',
                                         text: 'You are receiving this because now you are member of Central Mumbai GST .\n\n' +
                                         'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                                        'http://' + req.headers.host + '/admin/users/reset/' + token + '\n\n' +
+                                        'http://' + req.headers.host + '/admin/users/userVerify/' + token + '\n\n' +
                                         'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                                     };
-                                    smtpTransport.sendMail(mailOptions, function (err) {
+                                    smtpTransport.sendMail(mailOptions, function () {
                                         console.log('mail sent');
                                         // req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-                                        done(err, 'done');
+                                        done(null, 'done');
                                     });
                                     //res.redirect('/admin/forgot');
+                                    //return done(null,newUser);
                                 }
                             ], function (err) {
-                                //console.log('error function');
+                                console.log('error function');
                                 if (err) return next(err);
                                 //res.redirect('/admin/forgot');
                             });
-
-
                             return done(null,newUser);
 
                         }
@@ -144,7 +162,7 @@ module.exports = function(passport,user){
                 return bCrypt.compareSync(password, userpass);
             }
 
-            User.findOne({ where : { email: email}}).then(function (user) {
+            User.findOne({where: {email: email, status: "active"}}).then(function (user) {
 
                 if (!user) {
                     return done(null, false, { message: 'Email does not exist' });
