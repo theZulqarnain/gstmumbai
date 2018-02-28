@@ -15,6 +15,7 @@ adminpanel
 6-unique title name and disable edit title and fetch dynamically title @frontend
 7-nodeMailer
 8-google analytics
+9-update undefined token
 
 
 

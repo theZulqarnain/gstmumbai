@@ -66,6 +66,46 @@ module.exports = function(passport,user){
                         }
 
                         if(newUser){
+                            async.waterfall([
+                                function (done) {
+                                    crypto.randomBytes(20, function (err, buf) {
+                                        var token = buf.toString('hex');
+                                        done(err, token);
+                                    });
+                                    //console.log('1st function')
+                                },
+                                function (token, email, done) {
+                                    //console.log('3rd function');
+                                    var smtpTransport = nodemailer.createTransport({
+                                        service: 'Gmail',
+                                        auth: {
+                                            user: 'ak.zul65@gmail.com',
+                                            pass: 'google@123'
+                                        }
+                                    });
+                                    var mailOptions = {
+                                        to: email,
+                                        from: 'ak.zul65@gmail.com',
+                                        subject: 'Central Mumbai GST New Password',
+                                        text: 'You are receiving this because now you are member of Central Mumbai GST .\n\n' +
+                                        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                                        'http://' + req.headers.host + '/admin/users/reset/' + token + '\n\n' +
+                                        'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                                    };
+                                    smtpTransport.sendMail(mailOptions, function (err) {
+                                        console.log('mail sent');
+                                        // req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+                                        done(err, 'done');
+                                    });
+                                    //res.redirect('/admin/forgot');
+                                }
+                            ], function (err) {
+                                //console.log('error function');
+                                if (err) return next(err);
+                                //res.redirect('/admin/forgot');
+                            });
+
+
                             return done(null,newUser);
 
                         }
