@@ -15,38 +15,53 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="firstname">First Name</label>
-                                        <input type="text" class="form-control" id="firstname" name="firstname">
+                                        <input type="text" class="form-control" id="firstname" name="firstname"
+                                               value="<%- data.firstname %>">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lastname">Last Name</label>
-                                        <input type="text" class="form-control" id="lastname" name="lastname">
+                                        <input type="text" class="form-control" id="lastname" name="lastname"
+                                               value="<%- data.lastname %>">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="username">User Name</label>
-                                        <input type="text" class="form-control" id="username" name="username">
+                                        <input type="text" class="form-control" id="username" name="username"
+                                               value="<%- data.username %>">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email">
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               value="<%- data.email %>" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Status</label>
-                                        <select class="form-control" id="status" name="status">
-                                            <option>Active</option>
-                                            <option>De-Active</option>
+                                        <select class="form-control" id="status" name="status"
+                                                onchange="getSelectValue();">
+
+                                            <%
+                                            var options = ["active", "inactive"];
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+                                                var selected = (data.status == options[i]) ? "selected" : "";
+                                            %>
+                                            <option value="<%= options[ i ] %>" <%= selected %>><%= options[i] %></option>
+                                            <%
+                                            }
+                                            %>
                                         </select>
                                     </div>
                                 </div>
+
                             </div>
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </form>
                     </div>
 
@@ -55,4 +70,5 @@
         </div>
     </div>
 </div>
+
 <% include ../partials/footer.ejs%>

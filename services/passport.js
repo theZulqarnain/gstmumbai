@@ -63,6 +63,7 @@ module.exports = function(passport,user){
 
                     User.create(data).then(function(newUser,created){
                         if(!newUser){
+                            req.flash('error', 'user already Registered.plz enter another Email ID.')
                             return done(null,false);
                         }
 
@@ -74,7 +75,7 @@ module.exports = function(passport,user){
                                         var token = buf.toString('hex');
                                         done(err, token);
                                     });
-                                    console.log('1st function')
+                                    //console.log('1st function')
                                 }, function (token, done) {
                                     User.findOne({where: {email: newUser.email}}).then(function (user, err) {
                                         //err='No account with that email address exists.';
@@ -94,7 +95,7 @@ module.exports = function(passport,user){
 
                                 },
                                 function (token, user, done) {
-                                    console.log('2nd function');
+                                    //console.log('3rd function');
                                     var smtpTransport = nodemailer.createTransport({
                                         service: 'Gmail',
                                         auth: {
@@ -120,10 +121,11 @@ module.exports = function(passport,user){
                                     //return done(null,newUser);
                                 }
                             ], function (err) {
-                                console.log('error function');
+                                //console.log('error function');
                                 if (err) return next(err);
                                 //res.redirect('/admin/forgot');
                             });
+                            req.flash('success', 'user created successfully but still inActive. Register user must visit link within 4 hours')
                             return done(null,newUser);
 
                         }

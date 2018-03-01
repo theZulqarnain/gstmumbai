@@ -7,6 +7,7 @@ module.exports = function(user){
     var nodemailer = require("nodemailer");
     var crypto = require("crypto");
     var bCrypt = require('bcrypt-nodejs');
+    var middleware = require("../../middleware");
 
 var User;
 
@@ -22,17 +23,16 @@ if(user){
 
 //only for user verification end
 
-function isLoggedIn(req,res,next) {
-    if(req.isAuthenticated()){
-        return next();
-    }
-
-    res.redirect('/admin')
-}
 
 /* GET index users page. */
 router.get('/', function(req, res) {
-    res.render('admin/users/usersList');
+    Users.findAll({}).then(function (data) {
+        if (!data) {
+            req.flash('error', 'Data Not Found')
+            res.render('admin/pages/pagesList');
+        }
+        res.render('admin/users/usersList', {data: data});
+    });
 });
 
 router.get('/userNew', function(req, res) {
@@ -44,18 +44,53 @@ router.post('/userNew', passport.authenticate('local-signup',  {
     failureRedirect: '/admin/users/userNew'}
 ));
 
-router.get('/userEdit',isLoggedIn, function(req, res) {
-    res.render('admin/users/userEdit');
+    router.get('/userEdit/:email', function (req, res) {
+        let email = req.params.email;
+        Users.find({where: {email: email}}).then(function (data) {
+            if (!data) {
+                req.flash("error", "data not Found");
+                res.render('admin/users/userEdit');
+            }
+            res.render('admin/users/userEdit', {data: data});
+        });
 });
 
-router.post('/userEdit',isLoggedIn, function(req, res) {
-    console.log( req.body);
+    router.post('/userEdit', function (req, res) {
+        console.log(req.body);
+        let email = req.body.email;
+        Users.update(
+            {
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                username: req.body.username,
+                status: req.body.status
+            },
+            {where: {email: email}}
+        ).then(function (data) {
+            if (!data) {
+                req.flash("error", "error please check again");
+                res.redirect('/admin/users/userEdit/' + email)
+            }
+            req.flash("success", "User updated successfully");
+            res.redirect('/admin/users')
+        });
 });
 
-router.get('/delete',isLoggedIn, function(req, res) {
-    if (req.query) {
-        res.render('admin/users/usersList');
-    }
+    router.get('/delete/:email', function (req, res) {
+        var email = req.params.email;
+        Users.destroy({
+            where: {
+                email: email
+            }
+        }).then(function (rowDeleted) { // rowDeleted will return number of rows deleted
+            if (rowDeleted === 1) {
+                req.flash("success", "user deleted");
+                res.redirect('/admin/users')
+            }
+        }, function (err) {
+            req.flash("error", "something went wrong,user is not deleted!");
+            res.redirect('/admin/users')
+        });
 
 });
 
@@ -72,7 +107,8 @@ router.post('/signin',passport.authenticate('local-signin',
 
 router.get('/logout',function (req,res) {
     req.logout();
-    res.redirect('/admin');
+    req.flash("success", "Logged Out!")
+    res.redirect('/admin/users/signin');
 });
 
 //new password for users
@@ -84,7 +120,7 @@ router.get('/logout',function (req,res) {
             }
         }).then(function (user, err) {
             if (!user) {
-                req.flash('error', 'Password reset token is invalid or has expired.');
+                req.flash('error', 'Password generation token is invalid or has expired.');
                 return res.redirect('/admin/forgot');
             }
             res.render('admin/users/userVerify', {token: req.params.token});
@@ -101,7 +137,7 @@ router.get('/logout',function (req,res) {
                     }
                 }).then(function (user, err) {
                     if (!user) {
-                        req.flash('error', 'Password reset token is invalid or has expired.');
+                        req.flash('error', 'Password generation token is invalid or has expired.');
                         return res.redirect('back');
                     }
                     if (req.body.password === req.body.confirm) {
@@ -135,14 +171,15 @@ router.get('/logout',function (req,res) {
                 var mailOptions = {
                     to: user.email,
                     from: 'ak.zul65@gmail.com',
-                    subject: 'Your password has been changed',
-                    text: 'Hello,\n\n' +
+                    subject: 'Your password has been generated successfully',
+                    text: 'Hi,\n\n' +
                     'This is a confirmation that the password for your account ' + user.email + ' successfully Generated.\n'
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
                     //req.flash('success', 'Success! Your password has been changed.');
                     done(err);
                 });
+                //req.flash('success', 'New Password generation token sent to user email.');
                 res.redirect('/admin');
             }
         ], function (err) {

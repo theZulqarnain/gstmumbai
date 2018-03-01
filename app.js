@@ -7,6 +7,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport   = require('passport')
 var session    = require('express-session');
+var FroalaEditor = require('./lib/froalaEditor.js');
+var flash = require('connect-flash')
+
+
+app.use(flash());
    ////////////////////////////////////////////////////////////
 ///////////////////// start Passport   ///////////////////////////////
    ////////////////////////////////////////////////////////////
@@ -62,6 +67,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
+    next();
+})
+
+
 
 app.use('/', routes);
 app.use('/desk', desk);
@@ -84,6 +97,7 @@ app.use('/admin/users',user(models.user));
 
 
 //app.js squelize section ///
+
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

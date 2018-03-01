@@ -7,6 +7,7 @@ var async = require("async");
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
 var bCrypt = require('bcrypt-nodejs');
+var FroalaEditor = require('../../lib/froalaEditor.js');
 
 
 /* GET home page. */
@@ -18,8 +19,9 @@ function isLoggedIn(req,res,next) {
     res.redirect('/admin/users/signin')
 }
 
-router.get('/',isLoggedIn, function(req, res) {
+router.get('/', function (req, res) {
     //console.log(req.session.username)
+    // console.log(req.user);
     res.render('admin/dashboard/dashboard');
 });
 router.get('/forgot', function(req, res) {
@@ -76,6 +78,7 @@ router.post('/forgot', function(req, res, next) {
                 // req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
                 done(err, 'done');
             });
+            req.flash('success', 'Reset password link sent to email.link valid till 1 hour.');
             res.redirect('/admin/forgot');
         }
     ], function(err) {
@@ -158,24 +161,16 @@ router.post('/reset/:token', function (req, res) {
     });
 });
 
-// router.post('/forgot', function(req, res) {
-//     res.render('reset');
-// });
-// router.get('/signin', function(req, res) {
-//     res.render('signing');
-// });
+router.post('/upload_image', isLoggedIn, function (req, res) {
+    //console.log(req.body)
+    FroalaEditor.Image.upload(req, '/uploads/', function (err, data) {
 
-// router.post('/signin', function(req, res) {
-//     console.log( req.body);
-// });
-
-// router.post('/signin',passport.authenticate('local-signin',
-//     {
-//         successRedirect: '/admin/',
-//         failureRedirect: '/admin/signin',
-//     }
-//
-// ));
+        if (err) {
+            return res.send(JSON.stringify(err));
+        }
+        res.send(data);
+    });
+});
 
 
 

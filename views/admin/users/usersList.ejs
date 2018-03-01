@@ -19,40 +19,27 @@
                             <th>Name</th>
                             <th>Actions</th>
                             <th>Active</th>
-                            <th>created_at</th>
+                            <th>UpdatedAt</th>
 
                             </thead>
                             <tbody>
+                            <% data.forEach(function(item) { %>
                             <tr>
-                                <td>1</td>
-                                <td>zulqarnain</td>
-                                <td><a href="/admin/users/userEdit" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
+                                <td class="count"></td>
+                                <td><%- item.username %></td>
+                                <td><a href="/admin/users/userEdit/<%- item.email %>" data-toggle="tooltip"
+                                       title="Edit"> <i class="pe-7s-pen"
+                                                        style="font-size: 32px;color: #1D62F0;"></i></a>
                                     ---
-                                    <a href="/admin/users/delete" data-toggle="tooltip" title="Delete" onclick="if (!confirm('Are you sure to DELETE User')) { return false }"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
-                                <td>1</td>
-                                <td>21-02-2018</td>
+                                    <a href="/admin/users/delete/<%- item.email %>" data-toggle="tooltip" title="Delete"
+                                       onclick="if (!confirm('Are you sure to DELETE User')) { return false }"><i
+                                                class="pe-7s-close" style="font-size: 32px;color:red;"></i></a></td>
+                                <td><%- item.status %></td>
+                                <td><%- item.updatedAt %></td>
 
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>vinay</td>
-                                <td><a href="#" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
-                                    ---
-                                    <a href="#" data-toggle="tooltip" title="Delete"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
-                                <td>0</td>
-                                <td>21-02-2018</td>
+                            <% }); %>
 
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Heena</td>
-                                <td><a href="#" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
-                                    ---
-                                    <a href="#" data-toggle="tooltip" title="Delete"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
-                                <td>0</td>
-                                <td>21-02-2018</td>
-
-                            </tr>
 
                             </tbody>
                         </table>

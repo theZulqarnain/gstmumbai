@@ -5,6 +5,7 @@
 5-locate us
 6-where is contact us page....?
 7-add dynamically website name and other abstract names(header,footer,signing)
+8-sidebar active nav
 
 adminpanel
 1-transparent logo
@@ -15,19 +16,16 @@ adminpanel
 6-unique title name and disable edit title and fetch dynamically title @frontend
 7-nodeMailer
 8-google analytics
-9-update undefined token
+9-not empty pages and users
+10-404 ERROR page
 
 
 
 
 minor prblm
 1-query executing multiple times.
-2-image uploading but not showing in editor
-3-pagination
+2-pagination
 
-
-image uploading but not showing in editor
-redirect after fail has to be done
 .env
 google analytics
 
