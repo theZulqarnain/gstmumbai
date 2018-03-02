@@ -6,7 +6,6 @@ module.exports = function(sequelize, Sequelize) {
         content: {type: Sequelize.TEXT, notEmpty: true},
     });
 
-    console.log(pages.create, "wwww")
     return pages;
 
 };

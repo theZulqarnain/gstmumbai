@@ -113,14 +113,14 @@ router.post('/create', function (req, res) {
                     }, function (err) {
                         //console.log(err);
                         req.flash("error", "Error,please check again!")
-                        res.render('admin/pages/pageCreate');
+                        res.redirect('back');
                     })
                 }
             })
 
         } else {
             req.flash("error", "Title or Content can't be Empty");
-            res.render('admin/pages/pageCreate');
+            res.redirect('back');
         }
 
     });

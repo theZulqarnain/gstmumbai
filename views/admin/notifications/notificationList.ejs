@@ -1,0 +1,54 @@
+<% include ../partials/header.ejs %>
+<% include ../partials/sidebar.ejs %>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">List of Notifications</h4>
+                        <p class="category">You can View,Edit and Delete Notifications</p>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success"
+                                    onclick="javascript:location.href='/admin/notifications/create'"><i
+                                        class="fa fa-plus-square" style="font-size: 18px;"></i> Add New Notification
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <th>S.NO</th>
+                            <th>Title</th>
+                            <th>Actions</th>
+                            <th>Published</th>
+
+                            </thead>
+                            <tbody>
+                            <% data.forEach(function(item) { %>
+
+                            <tr>
+                                <td class="count"></td>
+                                <td><%- item.title.replace(/<(?:.|\n)*?>/gm, ''); %></td>
+                                <td><a href="/admin/notifications/edit/<%= item.id %>" data-toggle="tooltip"
+                                       title="Edit"> <i class="pe-7s-pen"
+                                                        style="font-size: 32px;color: #1D62F0;"></i></a>
+                                    ---
+                                    <a href="/admin/notifications/delete/<%= item.id %>" data-toggle="tooltip"
+                                       title="Delete"
+                                       onclick="if (!confirm('Are you sure to DELETE Notification?')) { return false }"><i
+                                                class="pe-7s-close" style="font-size: 32px;color:red;"></i></a></td>
+                                <td><%= item.updatedAt %></td>
+                            </tr>
+
+                            <% }); %>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer.ejs %>

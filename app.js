@@ -54,6 +54,7 @@ var admin = require('./routes/admin/index');
 var dashboard = require('./routes/admin/dashboard');
 var pages = require('./routes/admin/pages');
 var user = require('./routes/admin/users');
+var notifications = require('./routes/admin/notifications');
 
 
 
@@ -94,6 +95,7 @@ app.use('/admin', admin);
 app.use('/admin/dashboard',dashboard);
 app.use('/admin/pages',pages);
 app.use('/admin/users',user(models.user));
+app.use('/admin/notifications', notifications);
 
 
 //app.js squelize section ///
