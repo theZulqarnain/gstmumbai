@@ -24,7 +24,7 @@ router.post('/upload_file', function (req, res) {
         validation: null
     }
 
-    FroalaEditor.File.upload(req, '../public/uploads/', options, function(err, data) {
+    FroalaEditor.File.upload(req, '/uploads/', options, function (err, data) {
         //console.log(data)
         if (err) {
             return res.status(404).end(JSON.stringify(err));
@@ -97,17 +97,27 @@ router.post('/create', function (req, res) {
 
         // console.log(pages, pages().create)
         if (req.body.content.length && req.body.title.length > 0) {
-            pages.create({
-                title: req.body.title,
-                content: req.body.content
-            }).then(function (data) {
-                req.flash("success", "page created successfully!");
-                res.redirect('/admin/pages')
-            }, function (err) {
-                //console.log(err);
-                req.flash("error", "Error,please check again!")
-                res.render('admin/pages/pageCreate');
+            pages.findOne({where: {title: req.body.title}}).then(function (page) {
+                if (page) {
+                    req.flash("error", "Title Already Exist!");
+                    res.redirect('back');
+                }
+
+                else {
+                    pages.create({
+                        title: req.body.title,
+                        content: req.body.content
+                    }).then(function (data) {
+                        req.flash("success", "page created successfully!");
+                        res.redirect('/admin/pages')
+                    }, function (err) {
+                        //console.log(err);
+                        req.flash("error", "Error,please check again!")
+                        res.render('admin/pages/pageCreate');
+                    })
+                }
             })
+
         } else {
             req.flash("error", "Title or Content can't be Empty");
             res.render('admin/pages/pageCreate');

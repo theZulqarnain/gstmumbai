@@ -14,7 +14,7 @@ adminpanel
 4-body parser storing limit 100mb...?
 5-redirect after fail has to be done
 6-unique title name and disable edit title and fetch dynamically title @frontend
-7-nodeMailer
+
 8-google analytics
 9-not empty pages and users
 10-404 ERROR page

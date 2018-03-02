@@ -1,28 +1,4 @@
 <% include ../partials/header.ejs %>
-<div class="wrapper">
-    <div class="main main-raised" style="margin-top: 0px">
-        <div class="row">
-            <h2 class="text-center">Tenders</h2>
-            <div class="col-md-offset-2 col-md-8">
-                <table class="table table-bordered table-responsive table-striped">
-                    <tbody>
-                    <tr style="height: 24px;">
-                        <td style="width: 209px; height: 24px; text-align: center;"><strong>Tender No</strong></td>
-                        <td style="width: 763px; height: 24px; text-align: center;"><strong>Subject</strong></td>
-                        <td style="width: 183px; height: 24px; text-align: center;"><strong>Download</strong></td>
-                    </tr>
-                    <tr style="height: 24px;">
-                        <td style="width: 209px; height: 24px; text-align: center;">&nbsp;01/2017</td>
-                        <td style="width: 763px; height: 24px;">NOTICE INVITING QUOTATIONS FOR ANNUAL CONTRACT OF HOUSE- KEEPING</td>
-                        <td style="width: 183px; height: 32px; text-align: center;"><a href="/files/Tender1.pdf" target="_blank" rel="noopener"> <button class="btn btn-info">View<div class="ripple-container"></div></button> </a></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="space-50"></div>
-    </div>
-
-</div>
+<%- data.content %>
 
 <% include ../partials/footer.ejs%>

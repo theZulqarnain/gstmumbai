@@ -8,7 +8,7 @@ var page = require('../models/pages')(db.sequelize, db.Sequelize);
 router.get('/OrganizationalStructure', function(req, res) {
     page.find({where:{title:'ORGANIZATIONAL STRUCTURE'}}).then(function ( data) {
         if(!data){
-            res.render('aboutUs/OrganizationalStructure',{content:'Not Found!'});
+            res.render('aboutUs/OrganizationalStructure');
         }
         res.render('aboutUs/OrganizationalStructure',{data:data});
     });

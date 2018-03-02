@@ -1,17 +1,19 @@
 var express = require('express');
 var router = express.Router();
+var db = require("../models/index");
+var page = require('../models/pages')(db.sequelize, db.Sequelize);
 
 /* GET users listing. */
 
 router.get('/informationOfficer', function(req, res) {
-    res.render('RTI/informationOfficer');
+    page.find({where: {title: 'Information Officer'}}).then(function (data) {
+        if (!data) {
+            res.render('RTI/informationOfficer');
+        }
+        res.render('RTI/informationOfficer', {data: data});
+    });
 });
-router.get('/xyz', function(req, res) {
-    res.render('serviceTax/forms');
-});
-router.get('/circularsNotifications', function(req, res) {
-    res.render('serviceTax/circularsNotifications');
-});
+
 
 
 module.exports = router;
