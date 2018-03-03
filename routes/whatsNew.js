@@ -3,16 +3,16 @@ var router = express.Router();
 var db = require("../models/index");
 var notifications = require('../models/notifications')(db.sequelize, db.Sequelize);
 /* GET home page. */
-router.get('/', function(req, res) {
-    notifications.findAll({}).then(function (data) {
+router.get('/:id', function (req, res) {
+    var id = req.params.id;
+    notifications.find({where: {id: id}}).then(function (data) {
         if (!data) {
-            res.render('index');
+            req.flash("error", "data not Found");
+            res.render('whatsNew');
         }
-        res.render('index', {data: data});
+        res.render('whatsNew', {data: data});
     });
 });
-
-
 
 
 module.exports = router;

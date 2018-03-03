@@ -68,23 +68,21 @@
 
 
             <div class="col-md-2 col-md-offset-1">
-                <div class="sidebar">
+                <div class="sidebar" style="height: 980px;overflow-y: scroll;">
                     <h2 style="text-decoration: #fc896c underline;margin-left: 5px;">What's New</h2>
                     <ul style="list-style: none;margin-left: -30px">
-                        <h6><a href="#">Migrated Tax Payer</a></h6>
-                        <li>List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate</li>
-                        <h6><a href="#">Circular-GST Refund</a></h6>
-                        <li>List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate</li>
-                        <h6><a href="#">Circular-GST Refund</a></h6>
-                        <li>List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate</li>
-                        <h6><a href="#">Circular-GST Refund</a></h6>
-                        <li>List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate</li>
-                        <h6><a href="#">Circular-GST Refund</a></h6>
-                        <li>List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate.List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate</li>
-                        <h6><a href="#">Circular-GST Refund</a></h6>
-                        <li>List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate.List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate</li>
-                        <h6><a href="#">Circular-GST Refund</a></h6>
-                        <li>List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate.List of Migrated Tax Payers assigned to Central Tax, Delhi South Commissionerate</li>
+                        <% if (data) { %>
+                        <% data.forEach(function(item) { %>
+                        <h6><a href="/whatsNew/<%= item.id %>"><%- item.title %></a></h6>
+                        <li>
+                            <% if (item.content.length > 60){ %>
+                            <%- item.content.substring(0, 60).replace(/<(?:.|\n)*?>/gm, ''); %>.....
+                            <% } else { %>
+                            <%- item.content.replace(/<(?:.|\n)*?>/gm, ''); %>
+                            <% } %>
+                        </li>
+                        <% }); %>
+                        <% } %>
 
                     </ul>
                 </div>

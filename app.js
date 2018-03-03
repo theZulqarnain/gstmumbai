@@ -48,6 +48,7 @@ var contactus = require('./routes/contactus');
 var RTI = require('./routes/RTI');
 var desk = require('./routes/desk');
 var information = require('./routes/information');
+var whatsNew = require('./routes/whatsNew');
 
 //admin Requires
 var admin = require('./routes/admin/index');
@@ -88,6 +89,7 @@ app.use('/tradeNotices',tradeNotices);
 app.use('/RTI',RTI);
 app.use('/contactus',contactus);
 app.use('/information',information);
+app.use('/whatsNew', whatsNew);
 app.use('/users', users);
 
 //admin Routes

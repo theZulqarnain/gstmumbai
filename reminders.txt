@@ -6,6 +6,7 @@
 6-where is contact us page....?
 7-add dynamically website name and other abstract names(header,footer,signing)
 8-sidebar active nav
+9-fav icon
 
 adminpanel
 1-transparent logo
