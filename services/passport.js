@@ -167,11 +167,12 @@ module.exports = function(passport,user){
             User.findOne({where: {email: email, status: "active"}}).then(function (user) {
 
                 if (!user) {
+                    req.flash('error', 'Email does not exist')
                     return done(null, false, { message: 'Email does not exist' });
                 }
 
                 if (!isValidPassword(user.password,password)) {
-
+                    req.flash('error', 'Incorrect password.')
                     return done(null, false, { message: 'Incorrect password.' });
 
                 }
@@ -183,7 +184,7 @@ module.exports = function(passport,user){
             }).catch(function(err){
 
                 console.log("Error:",err);
-
+                req.flash('error', 'Something went wrong with your Signin.')
                 return done(null, false, { message: 'Something went wrong with your Signin' });
 
 

@@ -56,7 +56,7 @@ router.post('/userNew', passport.authenticate('local-signup',  {
 });
 
     router.post('/userEdit', function (req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         let email = req.body.email;
         Users.update(
             {
@@ -185,6 +185,69 @@ router.get('/logout',function (req,res) {
         ], function (err) {
             res.redirect('/admin');
         });
+    });
+
+    //Account routes
+
+    router.get('/account', middleware.isLoggedIn, function (req, res) {
+
+        let email = req.user.email;
+        Users.find({where: {email: email}}).then(function (data) {
+            if (!data) {
+                req.flash("error", "data not Found");
+                res.render('admin/users/account');
+            }
+            res.render('admin/users/account', {data: data});
+        });
+
+    });
+    router.post('/account', function (req, res) {
+        let email = req.body.email;
+        Users.update(
+            {
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                username: req.body.username,
+                email: req.body.email
+            },
+            {where: {id: req.user.id}}
+        ).then(function (data) {
+            if (!data) {
+                req.flash("error", "error please check again");
+                res.redirect('/admin')
+            }
+            req.flash("success", "User updated successfully");
+            res.redirect('/admin')
+        });
+    });
+    router.get('/password', function (req, res) {
+        res.render('admin/users/password')
+    });
+
+    router.post('/password', function (req, res) {
+        Users.findOne({
+            where: {
+                email: req.user.email
+            }
+        }).then(function (user, err) {
+            if (req.body.password === req.body.confirm) {
+                //var password =req.body.password;
+                var generateHash = function (password) {
+                    return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+                };
+                user.password = generateHash(req.body.password);
+
+                user.save({fields: ['password']}).then(() => {
+                    req.flash("success", "password has been changed");
+                    res.redirect('/admin/users/account')
+                });
+
+            } else {
+                req.flash("error", "Passwords do not match.");
+                return res.redirect('back');
+            }
+        });
+
     });
 
 

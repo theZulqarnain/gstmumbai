@@ -1,0 +1,62 @@
+<% include ../partials/header.ejs %>
+<% include ../partials/sidebar.ejs %>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Account of </h4>
+                        <p class="category">You can Edit Credentials</p>
+                    </div>
+                    <div class="content">
+                        <form action="/admin/users/account" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="firstname">First Name</label>
+                                        <input type="text" class="form-control" id="firstname" name="firstname"
+                                               value="<%- data.firstname %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="lastname">Last Name</label>
+                                        <input type="text" class="form-control" id="lastname" name="lastname"
+                                               value="<%- data.lastname %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="username">User Name</label>
+                                        <input type="text" class="form-control" id="username" name="username"
+                                               value="<%- data.username %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               value="<%- data.email %>">
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a class="btn btn-success" href="/admin/">Back</a>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </div>
+                        </form>
+                        <a class="btn btn-success" href="/admin/users/password">Change password</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<% include ../partials/footer.ejs %>
