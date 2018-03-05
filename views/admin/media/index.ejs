@@ -1,0 +1,179 @@
+<% include ../partials/header.ejs %>
+<% include ../partials/sidebar.ejs %>
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="header">
+                        <h4 class="title">Media</h4>
+                        <p class="category">You can View and Delete Media</p>
+
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="col-md-6">
+                        <form id="upload_form" enctype="multipart/form-data" class="form">
+
+                            <input type="file" name="files" id="files">
+                            <p>Drag your files here or click in this area.</p>
+                            <button onclick="uploadFile();return false;">Upload</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+                        <p id="status"></p>
+                        <h3 id="loaded_n_total"></h3>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 70px">
+                        <h2>Uploaded Files</h2>
+                        <% let ext;
+                        files.forEach(file => {
+                            ext = file.substring(file.lastIndexOf('.'), file.length);
+                        %>
+                        <div class="col-md-2" style="margin-bottom: 2px">
+                            <% if(ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') { %>
+                            <div class="thumbnail">
+                                <img src="/uploads/<%= file %>" alt="uploaded img" height="80%" width="80%"
+                                     data-id="<%= file %>" class="open-AddBookDialog" href="#myModal">
+                                <div class="caption">
+                                    <%= file %>
+                                </div>
+                            </div>
+                            <% } %>
+
+                            <% if(ext === '.pdf') { %>
+                            <div class="thumbnail">
+                                <div data-id="<%= file %>" class="open-AddBookDialog" href="#myModal">
+                                    <i class="fas fa-file-pdf" style="font-size: 150px"></i>
+                                    <div class="caption">
+                                        <%= file %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+
+                            <% if(ext === '.doc') { %>
+                            <i class="fas fa-file-word" style="font-size: 150px"></i>
+                            <%= file %>
+                            <% } %>
+
+                            <% if(ext === '.xls') { %>
+                            <i class="fas fa-file-excel" style="font-size: 150px"></i>
+                            <%= file %>
+                            <% } %>
+                        </div>
+                        <% }); %>
+
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">File Details</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="This not Img" id="photo_modal" height="50%" width="50%">
+                <p>
+                    Source
+                </p>
+                <input type="text" name="bookId" id="bookId" value="" disabled size="40"/>
+                <a href="" id='linkmodal' class="btn btn-danger" role="button"
+                   onclick="if (!confirm('Are you sure to DELETE Notification?')) { return false }">Permanent Delete</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).on("click", ".open-AddBookDialog", function (e) {
+
+        e.preventDefault();
+
+        var _self = $(this);
+
+        var myBookId = _self.data('id');
+        $("#bookId").val('/uploads/' + myBookId);
+        ext = myBookId.substring(myBookId.lastIndexOf('.'), myBookId.length);
+
+        if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+            $('#photo_modal').attr('src', $(this).attr('src'));
+        }
+        if (ext === '.pdf') {
+            $('#pdf_model').attr('src', $(this).attr('src'));
+        }
+        $('#linkmodal').attr('href', '/admin/media/delete/' + myBookId);
+        $(_self.attr('href')).modal('show');
+    });
+
+    $(document).ready(function () {
+        $('form input').change(function () {
+            $('form p').text(this.files.length + " file(s) selected");
+        });
+    });
+
+    function _(el) {
+        return document.getElementById(el);
+    }
+
+    function uploadFile() {
+        if (_("files").files[0]) {
+            var file = _("files").files[0];
+            // alert(file.name+" | "+file.size+" | "+file.type);
+            var formdata = new FormData();
+            formdata.append("files", file);
+            var ajax = new XMLHttpRequest();
+            ajax.upload.addEventListener("progress", progressHandler, false);
+            ajax.addEventListener("load", completeHandler, false);
+            ajax.addEventListener("error", errorHandler, false);
+            ajax.addEventListener("abort", abortHandler, false);
+            ajax.open("POST", "/admin/media/create"); // http://www.developphp.com/video/JavaScript/File-Upload-Progress-Bar-Meter-Tutorial-Ajax-PHP
+            //use file_upload_parser.php from above url
+            ajax.send(formdata);
+        } else {
+            console.log('plz select file')
+        }
+
+    }
+
+    function progressHandler(event) {
+        _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
+        var percent = (event.loaded / event.total) * 100;
+        _("progressBar").value = Math.round(percent);
+        _("status").innerHTML = Math.round(percent) + "% uploading... please wait";
+    }
+
+    function completeHandler(event) {
+        _("status").innerHTML = event.target.responseText;
+        _("progressBar").value = 0; //wil clear progress bar after successful upload
+    }
+
+    function errorHandler(event) {
+        _("status").innerHTML = "Upload Failed";
+    }
+
+    function abortHandler(event) {
+        _("status").innerHTML = "Upload Aborted";
+    }
+
+</script>
+<% include ../partials/footer.ejs %>
