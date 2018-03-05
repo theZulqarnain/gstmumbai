@@ -109,50 +109,29 @@
                         <div id="carousel">
                             <!-- Carousel Card -->
                             <div class="card card-raised card-carousel">
-                                <div id="carousel-example-generic2" class="carousel slide" data-ride="carousel">
+                                <div id="carousel-example-generic2" class="carousel slide article-slide"
+                                     data-ride="carousel">
                                     <div class="carousel slide" data-ride="carousel">
 
                                         <!-- Indicators -->
                                         <ol class="carousel-indicators">
-                                            <li data-target="#carousel-example-generic2" data-slide-to="0" class="active"></li>
-                                            <li data-target="#carousel-example-generic2" data-slide-to="1"></li>
-                                            <li data-target="#carousel-example-generic2" data-slide-to="2"></li>
-                                            <li data-target="#carousel-example-generic2" data-slide-to="3"></li>
-                                            <li data-target="#carousel-example-generic2" data-slide-to="4"></li>
+                                            <% for(var i = 0;i < files.length;i++){ %>
+                                            <li data-target="#carousel-example-generic2" data-slide-to="<%= i %>"
+                                                class="active"></li>
+                                            <% } %>
                                         </ol>
 
                                         <!-- Wrapper for slides -->
                                         <div class="carousel-inner c-height">
-                                            <div class="item active">
-                                                <img src="/images/event/Visit of FS -meeting with Chief  Commissioner & other Commissioners.jpg" alt="Awesome Image">
-                                                <div class="carousel-caption">
-                                                    <h4><i class="material-icons">location_on</i> central mumbai, IN</h4>
-                                                </div>
-                                            </div>
+                                            <% for(var i = 0;i < files.length;i++){ %>
                                             <div class="item">
-                                                <img src="/images/event/training of CPC officers.jpg" alt="Awesome Image">
+                                                <img src="/recentEvents/<%= files[i] %>" alt="Awesome Image">
                                                 <div class="carousel-caption">
                                                     <h4><i class="material-icons">location_on</i> central mumbai, IN</h4>
                                                 </div>
                                             </div>
-                                            <div class="item">
-                                                <img src="/images/event/Officers of CPC mumbai.jpg" alt="Awesome Image">
-                                                <div class="carousel-caption">
-                                                    <h4><i class="material-icons">location_on</i> central mumbai, IN</h4>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <img src="/images/event/Visit of FS to CPC mumbai -2.jpg" alt="Awesome Image">
-                                                <div class="carousel-caption">
-                                                    <h4><i class="material-icons">location_on</i> central mumbai, IN</h4>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <img src="/images/event/vist of FS to cpc Mumbai -1.jpg" alt="Awesome Image">
-                                                <div class="carousel-caption">
-                                                    <h4><i class="material-icons">location_on</i> central mumbai, IN</h4>
-                                                </div>
-                                            </div>
+                                            <% } %>
+
                                         </div>
                                     </div>
                                 </div>
@@ -212,3 +191,8 @@
 
 
 <% include partials/footer.ejs%>
+<script>
+    $(document).ready(function () {
+        $('#carousel-example-generic2').find('.item').first().addClass('active');
+    });
+</script>

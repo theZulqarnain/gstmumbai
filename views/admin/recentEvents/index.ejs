@@ -7,15 +7,15 @@
 
                 <div class="col-md-12">
                     <div class="header">
-                        <h4 class="title">Media</h4>
-                        <p class="category">You can View and Delete Media</p>
+                        <h4 class="title">Recent Events</h4>
+                        <p class="category">You can View and Delete Recent Events</p>
 
                     </div>
                 </div>
 
                 <div class="content">
                     <div class="col-md-6">
-                        <p class="text-danger">only .png .jpg .gif .jpeg and .pdf .doc .xls extensions are allowed</p>
+                        <p class="text-danger">only .png .jpg .gif and .jpeg extensions are allowed</p>
                         <form id="upload_form" enctype="multipart/form-data" class="form">
 
                             <input type="file" name="files" id="files">
@@ -37,11 +37,9 @@
                         <div class="col-md-2" style="margin-bottom: 2px">
                             <% if(ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') { %>
                             <div class="thumbnail">
-                                <img src="/uploads/<%= file %>" alt="uploaded img" height="80%" width="80%"
+                                <img src="/recentEvents/<%= file %>" alt="uploaded img" height="80%" width="80%"
                                      data-id="<%= file %>" class="open-AddBookDialog" href="#myModal">
-                                <div class="caption">
-                                    <%= file %>
-                                </div>
+
                             </div>
                             <% } %>
 
@@ -85,7 +83,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">File Details</h4>
+                <h4 class="modal-title">Image Details</h4>
             </div>
             <div class="modal-body">
                 <img src="" alt="This not Img" id="photo_modal" height="50%" width="50%">
@@ -113,7 +111,7 @@
         var _self = $(this);
 
         var myBookId = _self.data('id');
-        $("#bookId").val('/uploads/' + myBookId);
+        $("#bookId").val('/recentEvents/' + myBookId);
         ext = myBookId.substring(myBookId.lastIndexOf('.'), myBookId.length);
 
         if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
@@ -122,7 +120,7 @@
         if (ext === '.pdf') {
             $('#pdf_model').attr('src', $(this).attr('src'));
         }
-        $('#linkmodal').attr('href', '/admin/media/delete/' + myBookId);
+        $('#linkmodal').attr('href', '/admin/recentEvents/delete/' + myBookId);
         $(_self.attr('href')).modal('show');
     });
 
@@ -147,10 +145,11 @@
             ajax.addEventListener("load", completeHandler, false);
             ajax.addEventListener("error", errorHandler, false);
             ajax.addEventListener("abort", abortHandler, false);
-            ajax.open("POST", "/admin/media/create"); // http://www.developphp.com/video/JavaScript/File-Upload-Progress-Bar-Meter-Tutorial-Ajax-PHP
+            ajax.open("POST", "/admin/recentEvents/create"); // http://www.developphp.com/video/JavaScript/File-Upload-Progress-Bar-Meter-Tutorial-Ajax-PHP
             //use file_upload_parser.php from above url
             ajax.send(formdata);
             this.reset();
+            //location.reload();
         } else {
             console.log('plz select file')
         }
@@ -167,6 +166,7 @@
     function completeHandler(event) {
         _("status").innerHTML = event.target.responseText;
         _("progressBar").value = 0; //wil clear progress bar after successful upload
+
     }
 
     function errorHandler(event) {

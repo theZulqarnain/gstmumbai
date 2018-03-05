@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var db = require("../../models/index");
-var notifications = require('../../models/notifications')(db.sequelize, db.Sequelize);
+var recentEvents = require('../../models/recentEvents')(db.sequelize, db.Sequelize);
 var fs = require('fs');
 var multer = require('multer');
 var path = require('path')
 var storage = multer.diskStorage({
 
     destination: function (req, file, cb) {
-        cb(null, './public/uploads');
+        cb(null, './public/recentEvents');
     },
     filename: function (req, file, cb) {
         var filename = file.originalname;
@@ -23,7 +23,7 @@ var storage = multer.diskStorage({
 var upload = multer({
     storage: storage, fileFilter: function (req, file, callback) {
         var ext = path.extname(file.originalname);
-        if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.pdf' && ext !== '.doc' && ext !== '.xls') {
+        if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
             return callback(new Error('Only images are allowed'))
         }
         callback(null, true)
@@ -32,35 +32,27 @@ var upload = multer({
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    // notifications.findAll({}).then(function (data) {
-    //     if (!data) {
-    //         res.render('index');
-    //     }
-    //     res.render('index', {data: data});
-    // });
-    const uploadFolder = './public/uploads/';
+    const uploadFolder = './public/recentEvents/';
 
     fs.readdir(uploadFolder, (err, files) => {
-        res.render('admin/media/index', {files: files})
-    })
-
-
+        res.render('admin/recentEvents/index', {files: files})
+    });
 });
 router.post('/create', function (req, res) {
     upload(req, res, function (err) {
         if (err) {
-            req.flash('error', 'Error! only .png .jpg .gif .jpeg and .pdf .doc .xls extensions are allowed')
-            res.redirect('/admin/media');
+            req.flash('error', 'Error! only .png .jpg .gif and .jpeg extensions are allowed')
+            res.redirect('/admin/recentEvents');
         }
         else {
-            console.log("file was uploaded");
+            console.log("Image was uploaded");
         }
     });
-})
+});
 
 router.get('/delete/:file', function (req, res) {
     var file = req.params.file;
-    fs.unlink('./public/uploads/' + file, function (err) {
+    fs.unlink('./public/recentEvents/' + file, function (err) {
         if (err) {
             req.flash('error', 'file was not Deleted')
             res.redirect('back')

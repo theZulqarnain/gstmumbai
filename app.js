@@ -57,6 +57,7 @@ var pages = require('./routes/admin/pages');
 var user = require('./routes/admin/users');
 var notifications = require('./routes/admin/notifications');
 var media = require('./routes/admin/media');
+var recentEvents = require('./routes/admin/recentEvents');
 
 
 
@@ -100,6 +101,7 @@ app.use('/admin/pages',pages);
 app.use('/admin/users',user(models.user));
 app.use('/admin/notifications', notifications);
 app.use('/admin/media', media);
+app.use('/admin/recentEvents', recentEvents);
 
 
 //app.js squelize section ///
