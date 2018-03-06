@@ -49,7 +49,7 @@ if(user){
         Users.find({where: {email: email}}).then(function (user) {
             if (user) {
                 req.flash("error", "User with that Email Already Exist!");
-                res.render('/admin/users/userNew');
+                res.redirect('/admin/users/userNew');
             } else {
                 var data =
                     {
@@ -62,7 +62,7 @@ if(user){
                 Users.create(data).then(function (newUser) {
                     if (!newUser) {
                         req.flash('error', 'SomeThing Went Wrong.plz check Agian')
-                        res.render('/admin/users/userNew');
+                        res.redirect('/admin/users/userNew');
                     }
 
                     if (newUser) {

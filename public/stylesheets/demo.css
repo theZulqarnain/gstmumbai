@@ -136,6 +136,10 @@ table {
     background-color: #000;
 }
 
+.thumbnail {
+    height: 250px;
+}
+
 .thumbnail img {
     max-height: 250px;
 }

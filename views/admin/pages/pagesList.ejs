@@ -22,9 +22,9 @@
 
                     </thead>
                     <tbody>
-                    <% data.forEach(function(item) { %>
+                    <% data.forEach(function(item, i) { %>
                     <tr>
-                        <td class="count"></td>
+                        <td><%= (current - 1) * perPage + i + 1 %></td>
                         <td><%- item.title %></td>
                         <td><a href="/admin/pages/edit/<%= item.title %>" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
                             <% if(currentUser && currentUser.role === "Admin"){ %>
@@ -37,6 +37,36 @@
 
                     </tbody>
                 </table>
+                    <div class="col-md-4 col-md-offset-4">
+                        <% if (pages > 0) { %>
+                        <ul class="pagination text-center">
+                            <% if (current == 1) { %>
+                            <li class="disabled"><a>First</a></li>
+                            <% } else { %>
+                            <li><a href="/admin/pages/1">First</a></li>
+                            <% } %>
+                            <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                            <% if (i !== 1) { %>
+                            <li class="disabled"><a>...</a></li>
+                            <% } %>
+                            <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                            <% if (i == current) { %>
+                            <li class="active"><a><%= i %></a></li>
+                            <% } else { %>
+                            <li><a href="/admin/pages/<%= i %>"><%= i %></a></li>
+                            <% } %>
+                            <% if (i == Number(current) + 4 && i < pages) { %>
+                            <li class="disabled"><a>...</a></li>
+                            <% } %>
+                            <% } %>
+                            <% if (current == pages) { %>
+                            <li class="disabled"><a>Last</a></li>
+                            <% } else { %>
+                            <li><a href="/admin/pages/<%= pages %>">Last</a></li>
+                            <% } %>
+                        </ul>
+                        <% } %>
+                    </div>
 
                 </div>
                 </div>

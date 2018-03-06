@@ -78,15 +78,36 @@ router.get('/load_images', middleware.isLoggedIn, function (req, res) {
 //froalaEditor Ends
 
 /* GET home page. */
-router.get('/', middleware.isLoggedIn, function (req, res) {
-    var perPage = 9
+router.get('/', function (req, res) {
+    res.redirect('/admin/pages/1')
+})
+router.get('/:page', middleware.isLoggedIn, function (req, res) {
+    var perPage = 10
     var page = req.params.page || 1
-    pages.findAll({offset: (perPage * page) - perPage, limit: perPage}).then(function (data) {
+    pages.findAndCountAll({
+        offset: (perPage * page) - perPage,
+        limit: perPage,
+        order: [['title', 'ASC']]
+    }).then(function (data) {
         if(!data){
             res.render('admin/pages/pagesList',{content:'Not Found!'});
         }
-        res.render('admin/pages/pagesList',{data:data});
-    });
+        // console.log(data)
+        console.log(data.count)
+        // pages.count().then(function (count) {
+
+        // console.log(count);
+        // if(err){
+        //     res.render('admin/pages/pagesList');
+        // }
+        res.render('admin/pages/pagesList', {
+            perPage: perPage,
+            data: data.rows,
+            current: page,
+            pages: Math.ceil(data.count / perPage)
+        })
+    })
+    // });
     // var perPage = 9
     // var page = req.params.page || 1
 
@@ -104,6 +125,14 @@ router.get('/', middleware.isLoggedIn, function (req, res) {
     //             })
     //         })
     //     })
+
+
+    // pages.findAll({}).then(function (data) {
+    //     if(!data){
+    //         res.render('admin/pages/pagesList',{content:'Not Found!'});
+    //     }
+    //     res.render('admin/pages/pagesList',{data:data});
+    // });
 });
 
 router.get('/create', middleware.isLoggedIn, function (req, res) {
