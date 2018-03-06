@@ -7,7 +7,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport   = require('passport')
 var session    = require('express-session');
-var FroalaEditor = require('./lib/froalaEditor.js');
 var flash = require('connect-flash');
 var dotenv = require('dotenv');
 
@@ -53,7 +52,6 @@ var whatsNew = require('./routes/whatsNew');
 
 //admin Requires
 var admin = require('./routes/admin/index');
-var dashboard = require('./routes/admin/dashboard');
 var pages = require('./routes/admin/pages');
 var user = require('./routes/admin/users');
 var notifications = require('./routes/admin/notifications');
@@ -97,7 +95,6 @@ app.use('/users', users);
 
 //admin Routes
 app.use('/admin', admin);
-app.use('/admin/dashboard',dashboard);
 app.use('/admin/pages',pages);
 app.use('/admin/users',user(models.user));
 app.use('/admin/notifications', notifications);

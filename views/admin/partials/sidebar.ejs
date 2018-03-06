@@ -19,12 +19,12 @@
 
             <ul class="nav">
                 <li>
-                    <a href="/admin/dashboard">
+                    <a href="/admin/">
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <% if(currentUser.role === "Admin"){ %>
+                <% if(currentUser && currentUser.role === "Admin"){ %>
                 <li>
                     <a href="/admin/users">
                         <i class="pe-7s-user"></i>

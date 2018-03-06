@@ -35,16 +35,103 @@ if(user){
     });
 });
 
-router.get('/userNew', function(req, res) {
+    router.get('/userNew', middleware.isAdmin, function (req, res) {
     res.render('admin/users/userNew');
 });
 
-router.post('/userNew', passport.authenticate('local-signup',  {
-    successRedirect: '/admin/users',
-    failureRedirect: '/admin/users/userNew'}
-));
+// router.post('/userNew',middleware.isAdmin, passport.authenticate('local-signup',  {
+//     successRedirect: '/admin/users',
+//     failureRedirect: '/admin/users/userNew'}
+// ));
 
-    router.get('/userEdit/:email', function (req, res) {
+    router.post('/userNew', middleware.isAdmin, function (req, res) {
+        let email = req.body.email;
+        Users.find({where: {email: email}}).then(function (user) {
+            if (user) {
+                req.flash("error", "User with that Email Already Exist!");
+                res.render('/admin/users/userNew');
+            } else {
+                var data =
+                    {
+                        email: email,
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        username: req.body.username,
+                        role: req.body.role
+                    };
+                Users.create(data).then(function (newUser) {
+                    if (!newUser) {
+                        req.flash('error', 'SomeThing Went Wrong.plz check Agian')
+                        res.render('/admin/users/userNew');
+                    }
+
+                    if (newUser) {
+                        //console.log(newUser.email)
+                        async.waterfall([
+                            function (done) {
+                                crypto.randomBytes(20, function (err, buf) {
+                                    var token = buf.toString('hex');
+                                    done(err, token);
+                                });
+                                //console.log('1st function')
+                            }, function (token, done) {
+                                Users.findOne({where: {email: newUser.email}}).then(function (user, err) {
+                                    //err='No account with that email address exists.';
+                                    if (!user) {
+                                        req.flash('error', 'Email Didnt save in Database so unable to send Email.');
+                                        return res.redirect('/admin/users/userNew');
+                                    }
+                                    user.resetPasswordToken = token;
+                                    user.resetPasswordExpires = Date.now() + 3600000 * 4; // 4 hour
+                                    user.save({fields: ['resetPasswordToken', 'resetPasswordExpires']}).then(() => {
+
+                                        done(err, token, user);
+                                    });
+
+                                    //console.log('2nd function');
+                                });
+
+                            },
+                            function (token, user, done) {
+                                //console.log('3rd function');
+                                var smtpTransport = nodemailer.createTransport({
+                                    service: 'Gmail',
+                                    auth: {
+                                        user: process.env.MAIL_GMAIL_USER,
+                                        pass: process.env.MAIL_GMAIL_PWD
+                                    }
+                                });
+                                var mailOptions = {
+                                    to: user.email,
+                                    from: process.env.MAIL_GMAIL_USER,
+                                    subject: 'Central Mumbai GST New Password',
+                                    text: 'You are receiving this because now you are member of Central Mumbai GST .\n\n' +
+                                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                                    'http://' + req.headers.host + '/admin/users/userVerify/' + token + '\n\n' +
+                                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                                };
+                                smtpTransport.sendMail(mailOptions, function () {
+                                    console.log('mail sent');
+                                    // req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+                                    done(null, 'done');
+                                });
+                                req.flash('success', 'user created successfully but still inActive. Register user must visit link within 4 hours');
+                                res.redirect('/admin/users/');
+                            }
+                        ], function (err) {
+                            if (err) return next(err);
+                            req.flash('error', 'Email Didnt sent to user email id')
+                            res.redirect('/admin/users/');
+                        });
+                    }
+
+
+                });
+            }
+        });
+    });
+
+    router.get('/userEdit/:email', middleware.isAdmin, function (req, res) {
         let email = req.params.email;
         Users.find({where: {email: email}}).then(function (data) {
             if (!data) {
@@ -55,7 +142,7 @@ router.post('/userNew', passport.authenticate('local-signup',  {
         });
 });
 
-    router.post('/userEdit', function (req, res) {
+    router.post('/userEdit', middleware.isAdmin, function (req, res) {
         // console.log(req.body);
         let email = req.body.email;
         Users.update(
@@ -77,7 +164,7 @@ router.post('/userNew', passport.authenticate('local-signup',  {
         });
 });
 
-    router.get('/delete/:email', function (req, res) {
+    router.get('/delete/:email', middleware.isAdmin, function (req, res) {
         var email = req.params.email;
         Users.destroy({
             where: {
@@ -165,13 +252,13 @@ router.get('/logout',function (req,res) {
                 var smtpTransport = nodemailer.createTransport({
                     service: 'Gmail',
                     auth: {
-                        user: 'ak.zul65@gmail.com',
-                        pass: 'google@123'
+                        user: process.env.MAIL_GMAIL_USER,
+                        pass: process.env.MAIL_GMAIL_PWD
                     }
                 });
                 var mailOptions = {
                     to: user.email,
-                    from: 'ak.zul65@gmail.com',
+                    from: process.env.MAIL_GMAIL_USER,
                     subject: 'Your password has been generated successfully',
                     text: 'Hi,\n\n' +
                     'This is a confirmation that the password for your account ' + user.email + ' successfully Generated.\n'
@@ -202,7 +289,7 @@ router.get('/logout',function (req,res) {
         });
 
     });
-    router.post('/account', function (req, res) {
+    router.post('/account', middleware.isLoggedIn, function (req, res) {
         let email = req.body.email;
         Users.update(
             {
@@ -221,11 +308,11 @@ router.get('/logout',function (req,res) {
             res.redirect('/admin')
         });
     });
-    router.get('/password', function (req, res) {
+    router.get('/password', middleware.isLoggedIn, function (req, res) {
         res.render('admin/users/password')
     });
 
-    router.post('/password', function (req, res) {
+    router.post('/password', middleware.isLoggedIn, function (req, res) {
         Users.findOne({
             where: {
                 email: req.user.email

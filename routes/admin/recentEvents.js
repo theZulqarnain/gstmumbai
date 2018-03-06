@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require("../../models/index");
 var recentEvents = require('../../models/recentEvents')(db.sequelize, db.Sequelize);
+var middleware = require("../../middleware");
 var fs = require('fs');
 var multer = require('multer');
 var path = require('path')
@@ -31,14 +32,14 @@ var upload = multer({
 }).any();
 
 /* GET home page. */
-router.get('/', function (req, res) {
+router.get('/', middleware.isLoggedIn, function (req, res) {
     const uploadFolder = './public/recentEvents/';
 
     fs.readdir(uploadFolder, (err, files) => {
         res.render('admin/recentEvents/index', {files: files})
     });
 });
-router.post('/create', function (req, res) {
+router.post('/create', middleware.isLoggedIn, function (req, res) {
     upload(req, res, function (err) {
         if (err) {
             req.flash('error', 'Error! only .png .jpg .gif and .jpeg extensions are allowed')
@@ -50,7 +51,7 @@ router.post('/create', function (req, res) {
     });
 });
 
-router.get('/delete/:file', function (req, res) {
+router.get('/delete/:file', middleware.isLoggedIn, function (req, res) {
     var file = req.params.file;
     fs.unlink('./public/recentEvents/' + file, function (err) {
         if (err) {

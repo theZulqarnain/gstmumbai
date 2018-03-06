@@ -27,15 +27,18 @@
                         <td class="count"></td>
                         <td><%- item.title %></td>
                         <td><a href="/admin/pages/edit/<%= item.title %>" data-toggle="tooltip" title="Edit"> <i class="pe-7s-pen" style="font-size: 32px;color: #1D62F0;"></i></a>
+                            <% if(currentUser && currentUser.role === "Admin"){ %>
                                 ---
                             <a href="/admin/pages/delete/<%= item.title %>" data-toggle="tooltip" title="Delete" onclick="if (!confirm('Are you sure to DELETE Page?')) { return false }"><i class="pe-7s-close"style="font-size: 32px;color:red;"></i></a></td>
+                        <% } %>
                         <td><%- item.updatedAt %></td>
                     </tr>
                     <% }); %>
 
                     </tbody>
                 </table>
-            </div>
+
+                </div>
                 </div>
             </div>
         </div>

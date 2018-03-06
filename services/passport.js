@@ -100,13 +100,13 @@ module.exports = function(passport,user){
                                     var smtpTransport = nodemailer.createTransport({
                                         service: 'Gmail',
                                         auth: {
-                                            user: 'ak.zul65@gmail.com',
-                                            pass: 'google@123'
+                                            user: process.env.MAIL_GMAIL_USER,
+                                            pass: process.env.MAIL_GMAIL_PWD
                                         }
                                     });
                                     var mailOptions = {
                                         to: user.email,
-                                        from: 'ak.zul65@gmail.com',
+                                        from: process.env.MAIL_GMAIL_USER,
                                         subject: 'Central Mumbai GST New Password',
                                         text: 'You are receiving this because now you are member of Central Mumbai GST .\n\n' +
                                         'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -126,7 +126,7 @@ module.exports = function(passport,user){
                                 if (err) return next(err);
                                 //res.redirect('/admin/forgot');
                             });
-                            req.flash('success', 'user created successfully but still inActive. Register user must visit link within 4 hours')
+                            req.flash('success', 'user created successfully but still inActive. Register user must visit link within 4 hours');
                             return done(null,newUser);
 
                         }
@@ -137,8 +137,6 @@ module.exports = function(passport,user){
 
 
             });
-
-
 
         }
 

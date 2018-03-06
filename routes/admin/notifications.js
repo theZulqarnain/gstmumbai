@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require("../../models/index");
 var notifications = require('../../models/notifications')(db.sequelize, db.Sequelize);
+var middleware = require("../../middleware");
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -13,11 +14,11 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/create', function (req, res) {
+router.get('/create', middleware.isLoggedIn, function (req, res) {
     res.render('admin/notifications/notificationCreate');
 });
 
-router.post('/create', function (req, res) {
+router.post('/create', middleware.isLoggedIn, function (req, res) {
 
     db.sequelize.sync().then(function () {
 
@@ -44,7 +45,7 @@ router.post('/create', function (req, res) {
 
 });
 
-router.get('/edit/:id', function (req, res) {
+router.get('/edit/:id', middleware.isLoggedIn, function (req, res) {
     var id = req.params.id;
     notifications.find({where: {id: id}}).then(function (data) {
         if (!data) {
@@ -55,7 +56,7 @@ router.get('/edit/:id', function (req, res) {
     });
 });
 
-router.post('/edit', function (req, res) {
+router.post('/edit', middleware.isLoggedIn, function (req, res) {
     let id = req.body.id;
     notifications.update(
         {title: req.body.title, content: req.body.content},
@@ -70,7 +71,7 @@ router.post('/edit', function (req, res) {
     });
 });
 
-router.get('/delete/:id', function (req, res) {
+router.get('/delete/:id', middleware.isLoggedIn, function (req, res) {
     var id = req.params.id;
     notifications.destroy({
         where: {

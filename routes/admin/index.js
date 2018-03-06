@@ -7,21 +7,11 @@ var async = require("async");
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
 var bCrypt = require('bcrypt-nodejs');
-var FroalaEditor = require('../../lib/froalaEditor.js');
+var middleware = require("../../middleware");
 
 
 /* GET home page. */
-function isLoggedIn(req,res,next) {
-    if(req.isAuthenticated()){
-        return next();
-    }
-
-    res.redirect('/admin/users/signin')
-}
-
-router.get('/', function (req, res) {
-    //console.log(req.session.username)
-    // console.log(req.user);
+router.get('/', middleware.isLoggedIn, function (req, res) {
     res.render('admin/dashboard/dashboard');
 });
 router.get('/forgot', function(req, res) {
@@ -60,13 +50,13 @@ router.post('/forgot', function(req, res, next) {
             var smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
                 auth: {
-                    user: 'ak.zul65@gmail.com',
-                    pass: 'google@123'
+                    user: process.env.MAIL_GMAIL_USER,
+                    pass: process.env.MAIL_GMAIL_PWD
                 }
             });
             var mailOptions = {
                 to: user.email,
-                from: 'ak.zul65@gmail.com',
+                from: process.env.MAIL_GMAIL_USER,
                 subject: 'Central Mumbai GST Password Reset',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -139,13 +129,13 @@ router.post('/reset/:token', function (req, res) {
             var smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
                 auth: {
-                    user: 'ak.zul65@gmail.com',
-                    pass: 'google@123'
+                    user: process.env.MAIL_GMAIL_USER,
+                    pass: process.env.MAIL_GMAIL_PWD
                 }
             });
             var mailOptions = {
                 to: user.email,
-                from: 'ak.zul65@gmail.com',
+                from: process.env.MAIL_GMAIL_USER,
                 subject: 'Your password has been changed',
                 text: 'Hello,\n\n' +
                 'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
@@ -160,19 +150,6 @@ router.post('/reset/:token', function (req, res) {
         res.redirect('/admin');
     });
 });
-
-router.post('/upload_image', isLoggedIn, function (req, res) {
-    //console.log(req.body)
-    FroalaEditor.Image.upload(req, '/uploads/', function (err, data) {
-
-        if (err) {
-            return res.send(JSON.stringify(err));
-        }
-        res.send(data);
-    });
-});
-
-
 
 
 module.exports = router;

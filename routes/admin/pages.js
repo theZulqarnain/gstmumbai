@@ -18,7 +18,7 @@ if (!fs.existsSync(filesDir)){
 }
 
 
-router.post('/upload_file', function (req, res) {
+router.post('/upload_file', middleware.isLoggedIn, function (req, res) {
 
     var options = {
         validation: null
@@ -33,7 +33,7 @@ router.post('/upload_file', function (req, res) {
     });
 });
 
-router.post('/upload_image', function (req, res) {
+router.post('/upload_image', middleware.isLoggedIn, function (req, res) {
     FroalaEditor.Image.upload(req, '/uploads/', function (err, data) {
 
         if (err) {
@@ -43,7 +43,7 @@ router.post('/upload_image', function (req, res) {
     });
 });
 
-router.post('/delete_image', function (req, res) {
+router.post('/delete_image', middleware.isLoggedIn, function (req, res) {
 
     FroalaEditor.Image.delete(req.body.src, function(err) {
 
@@ -54,7 +54,7 @@ router.post('/delete_image', function (req, res) {
     });
 });
 
-router.post('/delete_file', function (req, res) {
+router.post('/delete_file', middleware.isLoggedIn, function (req, res) {
 
     FroalaEditor.File.delete(req.body.src, function(err) {
 
@@ -65,7 +65,7 @@ router.post('/delete_file', function (req, res) {
     });
 });
 
-router.get('/load_images', function (req, res) {
+router.get('/load_images', middleware.isLoggedIn, function (req, res) {
     FroalaEditor.Image.list('/uploads/', function (data, err) {
         if (!data) {
             return res.status(404).end(JSON.stringify(err));
@@ -78,21 +78,39 @@ router.get('/load_images', function (req, res) {
 //froalaEditor Ends
 
 /* GET home page. */
-router.get('/', function(req, res) {
-    pages.findAll({limit: 10, order: [['title', 'ASC']]}).then(function (data) {
+router.get('/', middleware.isLoggedIn, function (req, res) {
+    var perPage = 9
+    var page = req.params.page || 1
+    pages.findAll({offset: (perPage * page) - perPage, limit: perPage}).then(function (data) {
         if(!data){
             res.render('admin/pages/pagesList',{content:'Not Found!'});
         }
         res.render('admin/pages/pagesList',{data:data});
     });
+    // var perPage = 9
+    // var page = req.params.page || 1
 
+    // pages
+    //     .find({})
+    //     .offset((perPage * page) - perPage)
+    //     .limit(perPage)
+    //     .exec(function(err, products) {
+    //         Product.count().exec(function(err, count) {
+    //             if (err) return next(err)
+    //             res.render('admin/pages/pagesList', {
+    //                 data: data,
+    //                 current: page,
+    //                 pages: Math.ceil(count / perPage)
+    //             })
+    //         })
+    //     })
 });
 
-router.get('/create', function (req, res) {
+router.get('/create', middleware.isLoggedIn, function (req, res) {
     res.render('admin/pages/pageCreate');
 });
 
-router.post('/create', function (req, res) {
+router.post('/create', middleware.isLoggedIn, function (req, res) {
 
     db.sequelize.sync().then(function () {
 
@@ -128,7 +146,7 @@ router.post('/create', function (req, res) {
 
 });
 
-router.get('/edit/:title', function (req, res) {
+router.get('/edit/:title', middleware.isLoggedIn, function (req, res) {
     var title=req.params.title;
     pages.find({where:{title:title}}).then(function ( data) {
         if(!data){
@@ -139,8 +157,8 @@ router.get('/edit/:title', function (req, res) {
     });
 });
 
-router.post('/edit', function (req, res) {
-    let title = req.body.title
+router.post('/edit', middleware.isLoggedIn, function (req, res) {
+    let title = req.body.title;
     pages.update(
         { content: req.body.content },
         {where: {title: title}}
@@ -154,7 +172,7 @@ router.post('/edit', function (req, res) {
     });
 });
 
-router.get('/delete/:title', middleware.isLoggedIn, function (req, res) {
+router.get('/delete/:title', middleware.isLoggedIn, middleware.isLoggedIn, function (req, res) {
     var title=req.params.title;
     pages.destroy({
         where: {
