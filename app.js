@@ -8,9 +8,10 @@ var bodyParser = require('body-parser');
 var passport   = require('passport')
 var session    = require('express-session');
 var FroalaEditor = require('./lib/froalaEditor.js');
-var flash = require('connect-flash')
+var flash = require('connect-flash');
+var dotenv = require('dotenv');
 
-
+dotenv.config()
 app.use(flash());
    ////////////////////////////////////////////////////////////
 ///////////////////// start Passport   ///////////////////////////////
@@ -108,10 +109,15 @@ app.use('/admin/recentEvents', recentEvents);
 
 
 /// catch 404 and forwarding to error handler
+// app.use(function(req, res, next) {
+//     var err = new Error('Not Found');
+//     err.status = 404;
+//     next(err);
+// });
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
-    next(err);
+    res.render('404');
 });
 
 /// error handlers

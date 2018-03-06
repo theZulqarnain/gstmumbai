@@ -79,12 +79,13 @@ router.get('/load_images', function (req, res) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    pages.findAll({}).then(function ( data) {
+    pages.findAll({limit: 10, order: [['title', 'ASC']]}).then(function (data) {
         if(!data){
             res.render('admin/pages/pagesList',{content:'Not Found!'});
         }
         res.render('admin/pages/pagesList',{data:data});
     });
+
 });
 
 router.get('/create', function (req, res) {

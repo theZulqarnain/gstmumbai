@@ -9,7 +9,8 @@ module.exports = function(sequelize, Sequelize) {
         resetPasswordToken:{type: Sequelize.STRING},
         resetPasswordExpires:{type: Sequelize.DATE},
         password    : {type: Sequelize.STRING },
-        status      : {type: Sequelize.ENUM('active','inactive'),defaultValue:'inactive' }
+        status: {type: Sequelize.ENUM('active', 'inactive'), defaultValue: 'inactive'},
+        role: {type: Sequelize.ENUM('Admin', 'Author'), defaultValue: 'Author'}
     });
 
     return User;

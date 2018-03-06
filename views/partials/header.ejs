@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GST</title>
+    <title><%= process.env.SITE_NAME %></title>
     <meta charset="utf-8">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=" + Math.trunc(Math.random()*999)>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
@@ -24,13 +24,14 @@
 <!--Header-->
 <div class = "main-header">
     <div class="container">
-        <div class="col-lg-2" align="center"><img src="/images/logo.jpg" class="img-responsive"></div>
-        <div class="col-lg-6" align="center">
-            <p style="font-size:18px; padding-top:5px;">Government of India, Ministry of Finance <br>Department of Revenue <br>
+        <div class="col-md-2" align="center"><img src="/images/logo.jpg" class="img-responsive"></div>
+        <div class="col-md-8" align="center">
+            <p style="font-size:18px; padding-top:5px;line-height: 30px">Government of India, Ministry of Finance <br>Department
+                of Revenue <br>
                 <span style="color:#ba003c; font-size:25px; font-weight:bold;">GST &amp; Central Excise Mumbai Central Commissionerate </span></p>
         </div>
-        <div class="col-lg-2" align="center"><img src="/images/logo-3.jpg" class="img-responsive"></div>
-        <div class="col-lg-2" align="center"><img src="/images/FM.jpeg" class="img-responsive"></div>
+        <div class="col-md-1" align="center"><img src="/images/logo-3.jpg" class="img-responsive"></div>
+        <div class="col-md-1" align="center"><img src="/images/FM.jpeg" class="img-responsive"></div>
     </div>
 </div>
 <!-- Navbar -->

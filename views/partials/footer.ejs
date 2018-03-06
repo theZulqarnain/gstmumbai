@@ -4,7 +4,7 @@
         <div class="col-md-3 ">
             <h3 style="color: #ffffff;">CONTACT US</h3>
                     <div >
-                        <p style="color: #ffffff;">Central Goods Services Tax Commissionerate Mumbai Central</p>
+                        <p style="color: #ffffff;"><%= process.env.SITE_NAME %></p>
                         <p style="color: #ffffff;">Address :
                             Ground Floor, GST Bhavan, Churchgate, Mumbai-400020</p>
                         <p style="color: #ffffff;"> <i class="fa fa-phone"></i> 022-22002591</p>
@@ -62,7 +62,8 @@
             </div>
             <div class="col-md-5">
                 <div class="copyright " style="color: #ffffff;">
-                    &copy; 2018 GST & Central Excise Mumbai Central Commissionerate
+                    &copy;
+                    <script>document.write(new Date().getFullYear())</script> <%= process.env.SITE_NAME %>
                 </div>
             </div>
             <div class="col-md-3 " >

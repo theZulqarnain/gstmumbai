@@ -4,7 +4,7 @@
     <title>GST</title>
     <meta charset="utf-8">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=" + Math.trunc(Math.random()*999)>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
@@ -32,7 +32,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">GST & Central Excise Mumbai Central Commissionerate</a>
+            <a class="navbar-brand" href="/"><%= process.env.SITE_NAME %></a>
         </div>
 
         <div class="collapse navbar-collapse" id="navigation-example">
@@ -136,7 +136,9 @@
                     </ul>
                 </nav>
                 <div class="copyright pull-right">
-                    &copy; 2018 by <a href="/" target="_blank">GST & Central Excise Mumbai Central Commissionerate</a>
+                    &copy;
+                    <script>document.write(new Date().getFullYear())</script>
+                    by <a href="/" target="_blank"><%= process.env.SITE_NAME %></a>
                 </div>
             </div>
         </footer>

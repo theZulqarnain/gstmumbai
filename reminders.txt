@@ -1,34 +1,7 @@
-1- page scrolling
-2- sliders
-3-TRADING & NOTICES
-4-online RTI
-5-locate us
-6-where is contact us page....?
-7-add dynamically website name and other abstract names(header,footer,signing)
-8-sidebar active nav
-9-fav icon
-
 adminpanel
 1-transparent logo
-2-create page send data using get method.
-3-validation
-4-body parser storing limit 100mb...?
-5-redirect after fail has to be done
-6-unique title name and disable edit title and fetch dynamically title @frontend
-
-8-google analytics
-9-not empty pages and users
-10-404 ERROR page
-
-
-
-
-minor prblm
-1-query executing multiple times.
 2-pagination
 
-.env
-google analytics
 
 
 

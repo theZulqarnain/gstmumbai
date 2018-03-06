@@ -25,7 +25,7 @@ if(user){
 
 
 /* GET index users page. */
-router.get('/', function(req, res) {
+    router.get('/', middleware.isAdmin, function (req, res) {
     Users.findAll({}).then(function (data) {
         if (!data) {
             req.flash('error', 'Data Not Found')
@@ -63,7 +63,8 @@ router.post('/userNew', passport.authenticate('local-signup',  {
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 username: req.body.username,
-                status: req.body.status
+                status: req.body.status,
+                role: req.body.role
             },
             {where: {email: email}}
         ).then(function (data) {

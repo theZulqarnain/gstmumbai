@@ -43,8 +43,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Status</label>
-                                        <select class="form-control" id="status" name="status"
-                                                onchange="getSelectValue();">
+                                        <select class="form-control" id="status" name="status">
 
                                             <%
                                             var options = ["active", "inactive"];
@@ -53,6 +52,24 @@
                                                 var selected = (data.status == options[i]) ? "selected" : "";
                                             %>
                                             <option value="<%= options[ i ] %>" <%= selected %>><%= options[i] %></option>
+                                            <%
+                                            }
+                                            %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Role</label>
+                                        <select class="form-control" id="role" name="role">
+
+                                            <%
+                                            var options = ["Author", "Admin"];
+                                            for ( var i = 0; i < options.length; i++ )
+                                            {
+                                                var selected = (data.role == options[i]) ? "selected" : "";
+                                            %>
+                                            <option value="<%= options[i] %>" <%= selected %>><%= options[i] %></option>
                                             <%
                                             }
                                             %>
