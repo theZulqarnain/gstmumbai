@@ -119,10 +119,13 @@ if(user){
                                 res.redirect('/admin/users/');
                             }
                         ], function (err) {
-                            if (err) return next(err);
-                            req.flash('error', 'Email Didnt sent to user email id')
-                            res.redirect('/admin/users/');
+                            if (err) {
+                                req.flash('error', 'Email Didnt sent to user email id')
+                                res.redirect('/admin/users/');
+                            }
+
                         });
+
                     }
 
 

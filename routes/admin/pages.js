@@ -78,10 +78,10 @@ router.get('/load_images', middleware.isLoggedIn, function (req, res) {
 //froalaEditor Ends
 
 /* GET home page. */
-router.get('/', function (req, res) {
-    res.redirect('/admin/pages/1')
-})
-router.get('/:page', middleware.isLoggedIn, function (req, res) {
+// router.get('/', function (req, res) {
+//     res.redirect('/admin/pages/1')
+// })
+router.get('/list/:page', middleware.isLoggedIn, function (req, res) {
     var perPage = 10
     var page = req.params.page || 1
     pages.findAndCountAll({
@@ -107,35 +107,10 @@ router.get('/:page', middleware.isLoggedIn, function (req, res) {
             pages: Math.ceil(data.count / perPage)
         })
     })
-    // });
-    // var perPage = 9
-    // var page = req.params.page || 1
 
-    // pages
-    //     .find({})
-    //     .offset((perPage * page) - perPage)
-    //     .limit(perPage)
-    //     .exec(function(err, products) {
-    //         Product.count().exec(function(err, count) {
-    //             if (err) return next(err)
-    //             res.render('admin/pages/pagesList', {
-    //                 data: data,
-    //                 current: page,
-    //                 pages: Math.ceil(count / perPage)
-    //             })
-    //         })
-    //     })
-
-
-    // pages.findAll({}).then(function (data) {
-    //     if(!data){
-    //         res.render('admin/pages/pagesList',{content:'Not Found!'});
-    //     }
-    //     res.render('admin/pages/pagesList',{data:data});
-    // });
 });
 
-router.get('/create', middleware.isLoggedIn, function (req, res) {
+router.get('/create', function (req, res) {
     res.render('admin/pages/pageCreate');
 });
 
@@ -157,7 +132,7 @@ router.post('/create', middleware.isLoggedIn, function (req, res) {
                         content: req.body.content
                     }).then(function (data) {
                         req.flash("success", "page created successfully!");
-                        res.redirect('/admin/pages')
+                        res.redirect('/admin/pages/list/1')
                     }, function (err) {
                         //console.log(err);
                         req.flash("error", "Error,please check again!")
@@ -197,7 +172,7 @@ router.post('/edit', middleware.isLoggedIn, function (req, res) {
             res.redirect('/admin/pages/edit/'+title)
         }
         req.flash("success", "page updated successfully");
-        res.redirect('/admin/pages')
+        res.redirect('/admin/pages/list/1')
     });
 });
 
@@ -210,11 +185,11 @@ router.get('/delete/:title', middleware.isLoggedIn, middleware.isLoggedIn, funct
     }).then(function(rowDeleted){ // rowDeleted will return number of rows deleted
         if(rowDeleted === 1){
             req.flash("success", "page deleted");
-            res.redirect('/admin/pages')
+            res.redirect('/admin/pages/1')
         }
     }, function(err){
         req.flash("error", "something went wrong,page is not deleted!");
-        res.redirect('/admin/pages')
+        res.redirect('/admin/pages/1')
     });
 
 });
